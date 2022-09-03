@@ -1,0 +1,142 @@
+What to learn
+    Installation
+    Major commands
+    An editor
+
+Ubuntu is a Linux-based operating system
+Ubuntu is derived from Debian
+Ubuntu uses the same APT packaging system as Debian and shares a huge number of packages and libraries from Debian repositories
+'apt-***' commands for managing applications in both Debian and Ubuntu
+Debian is favorable for server mode because it provides a stable and secure release and created by Ian Murdock in 1993
+Ubuntu is for desktop mode because it continuously updates its packages and releases, making it less safe and stable and created in 2004 by Mark Shuttleworth
+Biggest distributions that do not derive from any other distribution are Debian, Arch, Red Hat
+The system is developed by a UK based company called Canonical Ltd
+All the developments are based on the principles of Open Source software development
+The normal Ubuntu interface is based on a software called Unity
+Kubuntu is based on a software called KDE Plasma desktop
+--- try installing one device drivers (press windows key and search for drivers )
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+Some of the terminal editors in ubuntu
+Gedit, Nano, Vim, Gvim, Emacs Editor
+
+
+General Kow-How
+A driver/device driver is a piece of software
+That software act as an interface to hardware devices, enabling OS and other computer programs to access hardware functions without needing to know precise details about the hardware being used
+All I/O devices required device drivers such as keyboards, mice, CD/DVD drives, controllers, printers, graphics cards and ports
+If the driver is included in an operating system, it may be referred to as a kernel-mode device driver
+Typically, a driver is a dynamic-link library (DLL) with the .sys file name extension
+A driver communicates with the device through the computer bus or communications subsystem to which the hardware connects
+When a calling program invokes a routine in the driver, the driver issues commands to the device (drives it)
+Once the device sends data back to the driver, the driver may invoke routines in the original calling program
+Routine is a sequence of program instructions that performs a specific task, packaged as a unit
+In different programming languages, a subroutine may be called a routine, subprogram, function, method, or procedure
+
+Wget is a computer tool created by the GNU Project
+wget retrieve content and files from various web servers
+wget = World Wide Web + get
+Supports downloads via FTP, SFTP, HTTP, and HTTPS
+Installing wget in ubuntu, sudo apt-get install wget
+download in current location : wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+download in a different location : wget -P ./Desktop/ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget to retrieve whole websites, wget --mirror --convert-links --page-requisites --no-parent -P documents/websites/ https://some-website.com
+
+Debian Linux uses 'dpkg'(default package manager) and APT(Advanced Package Tool) for managing(install, update, remove) packages
+APT  
+    supports local package installation using 'dpkg'
+    supports remote package installation
+    supports downloading dependencies while installation
+
+DPKG supports 
+    support only local package installation
+    does not support remote package installation
+    does not support downloading dependencies while installation
+
+Tools to interact with APT and allow you to install, remove and manage packages
+    apt-get is one such command-line tool
+    apt-cache is one such command-line tool
+    apt is one such command-line tool. Most commonly used package management commands are scattered across apt-get and apt-cache. apt consists some of the most widely used features from apt-get and apt-cache leaving aside obscure and seldom used features
+    Aptitude is a both GUI and command-line tool
+
+Using apt-get commands
+apt-get requires administrative(super-user) privileges, as it deals with core aspects of the system
+apt-cache does not require administrative privileges
+before commencing any operations with apt-get, we need to ensure that our local copy of the package database has been updated
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get autoremove
+sudo apt-get install vlc
+sudo apt-get purge vlc
+apt-cache showpkg vlc
+man apt-get && man apt-cache
+
+Key board shortcuts
+Bash Navigation
+Ctrl + A	Move to the start of the command line
+Ctrl + E	Move to the end of the command line
+Ctrl + F	Move one character forward
+Ctrl + B	Move one character backward
+Ctrl + XX	Switch cursor position between start of the command line and the current position
+Ctrl + ] + x	Moves the cursor forward to next occurrence of x
+Alt + F / Esc + F	Moves the cursor one word forward
+Alt + B / Esc + B	Moves the cursor one word backward
+Alt + Ctrl + ] + x	Moves cursor to the previous occurrence of x
+
+Bash Control/Process
+Ctrl + L	Similar to clear command, clears the terminal screen
+Ctrl + S	Stops command output to the screen
+Ctrl + Z	Suspends current command execution and moves it to the background
+Ctrl + Q	Resumes suspended command
+Ctrl + C	Sends SIGI signal and kills currently executing command
+Ctrl + D	Closes the current terminal
+
+Bash History
+Ctrl + R	Incremental reverse search of bash history
+Alt + P	Non-incremental reverse search of bash history
+Ctrl + J	Ends history search at current command
+Ctrl + _	Undo previous command
+Ctrl + P / Up arrow	Moves to previous command 
+Ctrl + N / Down arrow	Moves to next command
+Ctrl + S	Gets the next most recent command
+Ctrl + O	Runs and re-enters the command found via Ctrl + S and Ctrl + R
+Ctrl + G	Exits history search mode
+
+!!	Runs last command
+!*	Runs previous command except its first word
+!*:p	Displays what !* substitutes
+!x	Runs recent command in the bash history that begins with x
+!x:p	Displays the x command and adds it as the recent command in history
+!$	Same as OPTION+., brings forth last argument of the previous command
+!^	Substitutes first argument of last command in the current command
+!$:p	Displays the word that !$ substitutes
+^123^abc	Replaces 123 with abc
+!n:m	Repeats argument within a range (i.e, m 2-3)
+!fi	Repeats latest command in history that begins with fi
+!n	Run nth command from the bash history
+!n:p	Prints the command !n executes
+!n:$	Repeat arguments from the last command (i.e, from argument n to $)
+
+Bash Editing
+Ctrl + U	Deletes before the cursor until the start of the command
+Ctrl + K	Deletes after the cursor until the end of the command
+Ctrl + W	Removes the command/argument before the cursor
+Ctrl + D	Removes the character under the cursor
+Ctrl + H	Removes character before the cursor
+Alt + D	Removes from the character until the end of the word
+Alt + Backspace	Removes from the character until the start of the word
+Alt + . / Esc+.	Uses last argument of previous command
+Alt + <	Moves to the first line of the bash history
+Alt + >	Moves to the last line of the bash history
+Esc + T	Switch between last two words before cursor
+Alt + T	Switches current word with the previous
+
+Bash Information
+TAB	Auto completes the command or file/directory name
+~TAB TAB	List all Linux users
+Ctrl + I	Completes the command like TAB
+Alt + ?	Display files/folders in the current path for help
+Alt + *	Display files/folders in the current path as parameter
+
+    
+
