@@ -71,6 +71,13 @@
         # that fixed location contains the starting address of service routine for the interrupt
         # on completion, the CPU resumes the interrupted computation
         <img src="images/interrupttimeline.jpg" alt="" width="20%" height="10%">
+        # explanation
+            . I/O request - eg:keyboard pressed
+            . transferring of key value
+            . once the transfer completes, send an interrupt to CPU
+            . CPU respond by stopping the current execution and start the interrupted service routine
+            . once the service routine completes, restart stopped execution
+            . same process continues
 
     = storage structure
     = i/o structure
