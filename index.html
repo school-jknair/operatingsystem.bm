@@ -37,51 +37,77 @@
 <hr>
 <b id="id_introduction_detail">introduction</b>
 <img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-- what operating systems do
+# what operating systems do
     = a computer system can be divided roughly into four components
-        # hardware
-        # operating system
-        # application programs
-        # users
+        - hardware
+        - operating system
+        - application programs
+        - users
     = operating system manages computer hardware, system programs, application programs and users
     = an operating system acts as an intermediary between the user of a computer and the computer hardware
     = operating system is the program running at all times on the computer called the kernel
     = 2 other types of programs along with the kernel are
-        # system programs (associated with the operating system but are not necessarily part of the kernel)
-        # application programs (not associated with the operation of the system)
+        - system programs (associated with the operating system but are not necessarily part of the kernel)
+        - application programs (not associated with the operation of the system)
     = mobile operating systems often includes a middleware (set of software frameworks provides services to application developers)
-- computer-system organization
+# computer-system organization
     <img src="images/moderncomputersystem.jpg" alt="" width="20%" height="10%">
     = computer-system components
-        # a modern computer system consists of one or more CPUs and a number of device controllers connected through a common bus that provide access to shared memory
-        # each device controller is in charge of a specific type of devices
-        # CPUs and device controllers can execute in parallel competing for memory cycles
-        # memory controller synchronizes access to the memory
-    = computer-system operation
-        # when a computer powered up or reboot the initial program to execute is bootstrap program
-        # typically this program is stored with in the computer hardware in readonly memory(ROM) or firmware(EEPROM-electronically erasable programmable memory)
-        # the bootstrap program must locate the operating system kernel and load into memory
-        # the kernel starts providing services to the system and the users, some services are provided by few external programs
-        # these external programs are called system programs which is loaded to memory at boot time to become system process or daemons(in unix first daemon is 'init')
+        - a modern computer system consists of one or more CPUs and a number of device controllers connected through a common bus that provide access to shared memory
+        - each device controller is in charge of a specific type of device
+        - CPUs and device controllers can execute in parallel competing for memory cycles
+        - memory controller synchronizes access to the memory
+    = computer-system starting
+        - when a computer powered up or reboot the initial program to execute is bootstrap program
+        - typically this program is stored with in the computer hardware in ROM - readonly memory or firmware(EEPROM - electronically erasable programmable memory)
+        - the bootstrap program must locate the operating system kernel and load into memory
+        - the kernel starts providing services to the system and the users, some services are provided by few external programs
+        - these external programs are called system programs which is loaded to memory at boot time to become system process or daemons(in unix first daemon is 'init')
     = devices and CPU communication(events)
-        # events are occurred through interrupt mechanism from either the hardware or the software
-        # hardware may trigger an interrupt at any time by sending a signal to the CPUs usually by way of system bus
-        # software may trigger an interrupt at any time by executing a special operation called a system call(monitor call)
-        # when a CPU is interrupted, it stops the current operation and transfers to a fixed location
-        # that fixed location contains the starting address of service routine for the interrupt
-        # on completion, the CPU resumes the interrupted computation
-        <img src="images/interrupttimeline.jpg" alt="" width="20%" height="10%">
-        # explanation
-            . I/O request - eg:keyboard pressed
-            . transferring of key value
-            . once the transfer completes, send an interrupt to CPU
-            . CPU respond by stopping the current execution and start the interrupted service routine(address of the routine picked from interrupt vector)
-            . once the service routine completes, restart stopped execution
-            . similar process continues
-            . an array(interrupt vector) holds the addresses of interrupt service routines for various devices
+        - events are occurred through interrupt mechanism from either the hardware or the software
+        - hardware may trigger an interrupt at any time by sending a signal to the CPUs usually by way of system bus
+        - software may trigger an interrupt at any time by executing a special operation called a system call(monitor call)
+        - when a CPU is interrupted, it stops the current operation and transfers to a fixed location
+        - that fixed location contains the starting address of service routine for the interrupt
+        - on completion, the CPU resumes the interrupted computation
+        <img src="images/interrupttimeline.jpg" alt="" width="70%" height="40%">
     = storage structure
+        <img src="images/storagehierarchy.jpg" alt="" width="20%" height="10%">
+        - all forms of memory provide an array of bytes and every byte has an address
+        - main memory mainly implemented in a semiconductor technology called DRAM-dynamic random access memory is called RAM
+        - SSD, solid state drive is a non-volatile memory and stores data in a DRAM array during normal operation but also contains a hidden magnetic hard disk and a battery
+        - when external power is interrupted the SSD's controller will copy data from RAM to disk so its becomes non-volatile. when the external power is restored controller copies the data back to RAM  
+        - another non-volatile form is flash memory which doesn't require power to retain its contents and its a variant of EEPROM-electrically erasable programmable read-only memory 
+        - another non-volatile form is NVRAM which is DRAM with battery power
     = i/o structure
-computer-system architecture
+        <img src="images/devicecontrolleranddriver.jpg" alt="" width="17%" height="10%">
+        - every operating system have a device driver for each device controller
+        - device driver is a software program with which the device controller interacts with the operating system
+        - device controller is a hardware unit attached to the I/O bus and works like an interface between a device and a device driver
+        - device controller maintains some local buffer storage and a set of special purpose registers and it is responsible for moving the data between the peripheral devices and its local buffer storage 
+        - each device controller is in charge of a specific type of device
+        - SCSI-small computer systems interface controller can attach to seven or more devices 
+        - how data movement happens (small amount of data movement)
+            . device driver loads instructions to appropriate registers on the device controller
+            . device controller examines the contents of these registers to determine what action to take(like read)
+            . if its read instruction, device controller starts the transfer of data from the I/O device to its local buffer
+            . once the transfer completes, device controller informs the device driver via an interrupt that it has finished the operation
+            . device driver then returns control to the operating system and load data to memory
+        - how data movement happens (bulk data movement)
+            . device controller populate local buffers and transfers bulk of data to and from directly to memory
+            . this movement does not involve CPU and its called direct memory access(DMA)
+# computer-system architecture
+    = execution of instructions
+        - Von Neumann architecture was first published by John von Neumann in 1945
+        <img src="images/vonneumannarchitecture.jpg" alt="" width="17%" height="10%">
+        - it is based on the stored-program computer concept, where instruction data and program data are stored in the same memory
+        - interaction with CPU and memory unit is achieved through load and store instructions to specific memory addresses
+        - load - from main memory to internal registers within the CPU
+        - store - from internal registers to main memory
+        - need arises, CPUs explicitly loads instructions from main memory for execution
+        - instructions are processed via fetch-execute cycle
+        - CPU can load instruction only from main memory(RAM-random access memory)
+        <img src="images/fetchexecutecycle.jpg" alt="" width="20%" height="8%">
 operating-system structure
 operating-system operations
 process management
