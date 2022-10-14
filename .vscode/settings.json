@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "Interprocess"
+        "Interprocess",
+        "pthread",
+        "readcount"
     ]
 }

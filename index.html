@@ -1,6 +1,98 @@
 <!doctype html>
 <html>
 <head>
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+        
+        #myImg {
+          border-radius: 5px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+        
+        #myImg:hover {opacity: 0.7;}
+        
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          padding-top: 100px; /* Location of the box */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+        
+        /* Modal Content (image) */
+        .modal-content {
+          margin: auto;
+          display: block;
+          width: 80%;
+          max-width: 700px;
+        }
+        
+        /* Caption of Modal Image */
+        #caption {
+          margin: auto;
+          display: block;
+          width: 80%;
+          max-width: 700px;
+          text-align: center;
+          color: #ccc;
+          padding: 10px 0;
+          height: 150px;
+        }
+        
+        /* Add Animation */
+        .modal-content, #caption {  
+          -webkit-animation-name: zoom;
+          -webkit-animation-duration: 0.6s;
+          animation-name: zoom;
+          animation-duration: 0.6s;
+        }
+        
+        @-webkit-keyframes zoom {
+          from {-webkit-transform:scale(0)} 
+          to {-webkit-transform:scale(1)}
+        }
+        
+        @keyframes zoom {
+          from {transform:scale(0)} 
+          to {transform:scale(1)}
+        }
+        
+        /* The Close Button */
+        .close {
+          position: absolute;
+          top: 15px;
+          right: 35px;
+          color: #f1f1f1;
+          font-size: 40px;
+          font-weight: bold;
+          transition: 0.3s;
+        }
+        
+        .close:hover,
+        .close:focus {
+          color: #bbb;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px){
+          .modal-content {
+            width: 100%;
+          }
+        }
+    </style>
+
+   
+
     <meta charset='utf-8'>
     <meta http-equiv='x-ua-compatible' content='ie=edge'>
     <link rel="shortcut icon" href="images/formyreference.png" type="image/x-icon">
@@ -11,8 +103,11 @@
                                                                                                         <cite>ജയകുമാർ നായർ തയ്യാറാക്കിയത് 
                                                                                                         reference: 
                                                                                                         Operating System Concepts, Ninth Edition by Abraham Silberschatz, Peter Baer Galvin and Greg Gagne
+                                                                                                        https://www.youtube.com/channel/UCVZD4ph7tqdAbVO4URH9QGw/videos (need to refer)
                                                                                                                    </cite>
 <hr>
+<details>
+    <summary id="id_somethingextra_detail">drafted part</summary>
 <table border="0" width="100%">
     <tr>
         <td align="middle"><img src="images/os-birds-eye-view.jpg" alt="" width="35%"></td>
@@ -38,10 +133,7 @@
     </tr>
 </table>
 <hr>
-<details>
-    <summary id="id_somethingextra_detail">drafted part</summary>
 <b id="id_introduction_detail">introduction</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # what operating systems do
     = a computer system can be divided roughly into four components
         - hardware
@@ -197,6 +289,9 @@
     = what is multiprocessing
         - multi processor(CPU) systems
         - any CPU will have one job at a time
+    = objective of multiprogramming and time-sharing
+        - multiprogramming: maximum CPU utilization
+        - time-sharing : maximum CPU utilization + maximize users interaction with programs
 # operating-system operations
     = operating systems are interrupt driven
     = events are always signaled by the occurrence of an interrupt or a trap
@@ -224,6 +319,7 @@
         - timer prevent a user program from running too long
 # process management
     = a program in execution is process or run time picture of a program is the process
+    = a program that is running is a process 
     = a process needs certain resources (CPU time, memory, files and I/O devices) to accomplish its task
     = two type of processes are 
         - single threaded process has one program counter(PC)
@@ -288,7 +384,6 @@
     = real time embedded systems
 <hr>
 <b id="id_operatingsystemstructures_detail">operating-system structures</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # operating-system service
 <img src="images/operating-systems-services.jpg" alt="" width="30%" height="10%">
     = services provides functions that are helpful for the users
@@ -413,68 +508,919 @@
     = firmware, because its characteristics fall somewhere between those of hardware and those of software
     = GRUB is an example of an open-source bootstrap program for linux systems
     = a disk that has a boot partition is called boot disk or system disk
-</details>
+<!-- </details> -->
 <hr>
 <b id="id_processes_detail">processes</b>
 <img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # process concept
-    - process is program in execution or runtime picture of a program
-    - process can be called a job or a task
-    - process contains following sections
+    = process is program in execution or runtime picture of a program
+    = process can be called a job or a task
+    = process contains following sections
     <img src="images/processinmemory.jpg" alt="" width="10%" height="5%">
-        . text section : code and value of processor's registers
-        . data section : global variables
-        . heap section : area for dynamic allocation
-        . stack section : temporary data area(function parameter, return address and local variables)
-    - a program become process when the program loaded in to memory
-    - 2 common techniques for loading executable files to memory
-        . double clicking an icon representing the executable file
-        . entering the name of the executable file on CLI
-    
+        - text section : code and value of processor's registers
+        - data section : global variables
+        - heap section : area for dynamic allocation
+        - stack section : temporary data area(function parameter, return address and local variables)
+    = a program become process when the program loaded in to memory
+    = 2 common techniques for loading executable files to memory
+        - double clicking an icon representing the executable file
+        - entering the name of the executable file on CLI
+    = process itself can be a running environment for code, JVM process, java code is executed inside JVM
+    = as a process executes, it changes state, in one of the following
+    <img src="images/processstate.jpg" alt="" width="25%" height="5%">
+        - new, the process is being created
+        - ready, waiting to get the processor
+        - running, instruction is being executed
+        - terminated, process finished execution
+        - waiting, for some event to occur(IO completion or reception of a signal) 
+    = each process is represented in the OS by a process control block(PCB, task control block)
+    = PCB is a data structure used by OS to store all the information about a process
+    <img src="images/processcontrolblock.jpg" alt="" width="10%" height="5%">
+        - process state : new, running, terminated, etc
+        - process number or id
+        - program counter : address of the next instruction to be executed for this process
+        - registers : accumulator, index registers, stack pointer, general purpose register and any condition code information. PC and other state information needs to be registered when an interrupt occurs.
+        - CPU scheduling information : process priority, pointers to scheduling queues and other scheduling parameter
+        - memory management information : bas and limit registers and page tables or segment tables
+        - accounting information
+        - IO status information : list of IO devices allocated to the process, list of open files 
 # process scheduling
+    = process scheduler select an available process for execution on the CPU
+    = processes entering to the system will put into a job queue
+    = 2 type of queues are present 
+       - processes residing in main memory(ready and waiting) are kept on a list called 'ready queue'
+       - processes waiting for a particular IO device is called a 'device queue'. each device has its own queue.
+    = data structure for ready queue is generally on linked list
+    = head part contains pointers to the first PCB and tail part contains pointers to the final PCB on ready queue header
+    = each PCB includes a pointer field that points to the next PCB in the ready queue
+    <img src="images/variousqueues.jpg" alt="" width="20%" height="5%">
+    = process is getting allocated to CPU from ready queue
+    <img src="images/queuingdiagramofprocessscheduling.jpg" alt="" width="23%" height="5%">
+    = process migrate among various scheduling queues throughout its life time. OS must select processes from these queues
+    = the selection process is carried out by the appropriate 'process schedulers'
+    = 3 type of schedulers are 
+        - long term scheduler, select the process from job pool(typically from mass storage) and loads to memory
+        - medium term scheduler, to remove a process from main memory to secondary memory(swap out) and later reintroduced to main memory from secondary memory(swap in)
+        - short term scheduler, select for CPU execution
+        <img src="images/typesofschedulers.jpg" alt="" width="23%" height="5%">
+    = 'frequency of execution' is the differentiation factor between schedulers
+        - often short term scheduler will execute once every 100 milliseconds
+        - ofter long term scheduler will execute once in minutes and so
+    = 2 types of processes
+        - IO bound process, more time spent on IO than on computation
+        - CPU bound process, more time doing computation and generate infrequent IO request
+    = lond term scheduler needs to select a good process mix but short term scheduler will have little to do
+    = UNIX and Windows often no long term scheduler instead put every new process in memory for the short term scheduler
+    = an alternative is medium term scheduler, will remove process from memory and later this can be reintroduced for execution, this scheme is called swapping
+    = context switch
+    = altering user task and kernel task is frequent in general purpose system
+    = when an interrupt occurs, the current 'context' of the process running on the CPU is saved
+    = context is represented in PCB of the process
+    = 'context switching', performing the 'state save' and 'state restore'
+    = context switching is an overhead on systems
+    = Sun UltraSparc provides multiple sets of registers, so context switching is just pointing to a different register set
 # operations on processes
+    = process creation 
+        - during the course of execution, a process may create  several new processes 
+        - every process will be identified with a unique number called process identifier(pid)
+        - process creator process is called parent process 
+        - new process is called child process
+        - when a process creates a new process, 2 possibilities exists
+            . the parent continues to execute concurrently with the child
+            . the parent wait for the child to get terminated
+        - address space is a range of valid addresses in memory that are available for a process
+        <img src="images/addressspace.jpg" alt="" width="23%" height="5%">
+        - 2 address space possibilities for a new process
+            . child is a duplicate of parent process, so it has the same program and data as the parent
+            . child process has a new program got loaded into it
+        - UNIX way of new process creation
+            . process are created by fork() in UNIX in that a parent creates creates a new child process 
+            . contents of new process's address space will be a copy of parent process's address space
+            . since both address spaces are identical, its difficult to identify parent and child process
+            . return value of fork() is useful for finding the parent and child process (pid = fork())
+                * pid = 0 in child process
+                * pid = nonzero in parent process 
+                <a href="https://www.csl.mtu.edu/cs4411.ck/www/NOTES/process/fork/fork-02.c" target="_blank" rel="noopener noreferrer">explaining forking with example</a>
+            . both process will continue to execute at the very next instruction after the fork() code line
+            . exec() system call loads a binary file into memory and starts execution 
+            . after exit the child process the parent process will re-start again
+            <img src="images/processcreationusingforksystemcall.jpg" alt="" width="30%" height="10%">
+        - Windows way of new process creation  
+            . process are created in the Windows API using CreateProcess() function
+            . the child process will be loading a specified program into its address space
+    = process termination 
+        - child process finishes (exit() system call) its execution and return the status value to the parent process 
+        - exit() will deallocate or closes all the open files, IO buffers and virtual and physical memory ie PCB removed by the OS
+        - parent process will be waiting (wait() system call)
+        - functions of wait() system call in 2 different situations
+            . if at least one child process running and the wait() call made, then the caller will wait until that child exit() its process
+            . if there is no child process is running and the wait call made, then it will have no effect
+        - child process will pass its identity to parent process  
+        - only parent can initiate a termination system call (TerminateProcess()) to avoid inappropriate use 
+        - a parent can initiate the termination process due to
+            . child exceed the resource usage 
+            . task assigned to child is no longer required
+            . OS will not allow the child to continue when its parent exited, this phenomenon is referred to as 'cascading termination'
+        - normal termination circumstances are
+            . directly by exit() system call
+            . indirectly by return from main() function call
+        - process table, is a data structure maintained by the OS to facilitate context switching, scheduling and other activities
+        - process table is an array of PCBs 
+        - each entry in the table is called 'context block'
+        <img src="images/processtable.jpg" alt="" width="20%" height="10%">
+        - even after the exit() call the entry in the process table will remain until parent calls wait(), since this table contains process exit status 
+        - a process that is terminated and parent not yet called the wait() is known as 'zombie'
+        - process identifier of the zombie process ans its entry in the process table are released
+        - if the parent not invoked the wait() call but the child terminated these processes are called 'orphans'
+        - Linux and UNIX address this scenario by assigning the init process as the new parent to orphan processes
+        - init will invoke wait() periodically to collect exit status of the orphaned process and releasing the orphan's process identifier and process table-entry
 # interprocess communication
-# examples of ipc system
+    = 2 types of process are
+        - independent process, no data sharing with other process
+        - cooperating process, data sharing with other process
+    = cooperating process require an interprocess communication(IPC) mechanism to exchange data and information 
+    = 2 models of IPC   
+        - message passing, sharing takes place by means of message exchange 
+        - shared memory, region of memory is shared between cooperating process
+        <img src="images/interprocesscommunication.jpg" alt="" width="20%" height="5%">
+    = both models are common in OS
+    = message passing is easy for 
+        - small amount of data sharing
+        - distributed systems
+    = message passing require more system calls compared to shared memory as this requires system call only to establish shared memory region 
+    = on single core systems, preferred model is shared memory 
+    = on multi core systems, preferred model is message passing. shared memory model suffers from cache coherency issues 
+    = cache coherency, ensures that changes to the values ​​of shared operands are propagated across the system in a timely manner
+    = shared memory model
+        - communicating process(process A in picture) will establish a region to share with other processes 
+        - usually, a shared memory region resides in the address space of the process that creates the shared memory segment
+        - other process wish to communicate using this shared memory segment must attach it to their address space
+        - OS will prevent one process to access other processes memory 
+        - shared memory requires that 2 or more process agree to remove this restriction 
+        - common paradigm for illustrate the concept of cooperating processes is producer-consumer problem
+            . compiler produces assembly code and consumed by assembler
+            . assembler produces object modules and consumed by loader
+            . server produces web pages and browser reads those web pages
+        - producer will create a buffer in its own address spaces
+        - producer and consumer will agree to read and write to this buffer
+        - producer and consumer must be synchronized
+        - 2 types of buffers 
+            . unbounded buffer, no practical limit on the size of the buffer
+                * producer can always produce items
+                * consumer must wait if the buffer is empty   
+            . bounded buffer, fixed buffer size
+                * producer must wait if the buffer is full
+                * consumer must wait if the buffer is empty     
+    = message passing model
+        - process should send a message and other process should receive it
+        - a communication link needs to establish for the above communication 
+        - few methods for implementing this communication link 
+            . direct and indirect communication 
+            . synchronous or asynchronous communication 
+            . automatic or explicit buffering
+        - direct communication
+            . create an identity(name) for the sender and receiver
+            . every pair will have exactly one link 
+            . one variant, sender and receiver process uses others name to communicate, symmetry
+            . another variant, only sender uses receivers name for communication, asymmetry
+            . this method can be termed as hard coding technique 
+        - indirect communication
+            . messages are sent to and receive from mailboxes or ports 
+            . each mailbox has a unique identification
+            . every pair will have a shared mailbox 
+            . mailbox may be owned by either OS or by a process(part of address space)
+            . if the owner of the mail box terminates, then the mail box also needs to be terminated 
+        - synchronous or asynchronous communication 
+            . send and receive of messages are 2 primitives for this message passing model
+            . message passing may be either blocking(synchronous) or non blocking(asynchronous)
+                * blocking send, send the next message only after the completion of the current message is delivered
+                * non blocking send, send the message irrespective of delivery status
+                * blocking receive, wait until the message is available 
+                * non blocking receive, keep the receiving loop always on
+        - automatic or explicit buffering
+            . messages are exchanged through a queue 
+                * zero capacity(no buffering), no waiting in queue 
+                * bounded capacity(automatic buffering), queue has finite length. sender must stop producing if its full
+                * unbounded capacity(automatic buffering), queue has in-finite length. sender can keep producing
 # communication in client–server systems
-# summary
+    = 3 other process communication techniques apart from message passing and shared memory
+        - sockets
+        - remote procedure calls(RPCs)
+        - pipes 
+    = socket, is defined as an endpoint for communication 
+        - socket communication is considered a very low level form of communication between distributed processes 
+        - a pair of process communicating over a network employs a pair of sockets, one for each process 
+        - each socket is identified with an IP address concatenated with a port number 
+        - a host machine is referring to itself with an IP address of 127.0.0.1 called loopback
+        - socket uses a client server architecture 
+        - server waits for incoming client requests on a port 
+        - once a request is received, the server accepts a connection from the client socket to complete the connection 
+        - server implement specific services to listen to on well know ports
+        - port, is a logical construct that identifies a specific process
+        - well known ports are, all the ports below 1024(telnet on port 23, ftp on 21, HTTP on 80)
+        - when a client process initiates a request for a connection, host machine assigns a port
+        - host machine will assign an arbitrary number greater than 1024 as the port
+        - socket allow only an unstructured stream of bytes to be exchanged and server and client application to impose a structure on the data 
+    = remote procedure calls
+        - RPC communication is considered a high level form of communication between distributed processes 
+        - this method uses a message based communication scheme to provide remote service 
+        - message exchanged in RPC communication are well structured and are no longer just packets of data 
+        - message to the server(service) is  
+            . addressed to an RPC daemon listening to a port on the remote system 
+            . an identifier specifying the function to execute and the parameters to pass to that function 
+        - message response to the client is 
+        . output will be send to the client in a separate message 
+    <img src="images/executionofRPCcall.jpg" alt="" width="25%" height="5%"> 
+    = pipes 
+        - pipe acts as a conduit/channel allowing 2 processes to communicate 
+        - one of the simplest way for IPC 
+        - implementation points to consider 
+            . pipe is unidirectional or bi-directional 
+            . if bi-directional
+                * half-duplex(data can travel only one way at a time)
+                * full-duplex(data can travel both ways at same time)
+            . should a parent-child relationship exist before communication 
+            . communication over a network is possible 
+        - ordinary pipes
+            . communication in a producer-consumer fashion in unidirectional model with a parent and child relationship
+            . producer writes to one end of the pipe and consumer reads from the other end 
+            . 2 pipes required for implementing bi-directional communication
+            . UNIX treats a pipe as a special type of file 
+            . parent process creates pipe and fork() ing a child, so the child will have access to pipe created by parent   
+            . ordinary pipe can only be used for processes with a machine 
+            . once the process has finished communication and terminated the ordinary pipe ceases to exist 
+            . 'ls | more' in UNIX and 'dir | more' in Windows 
+        - named pipes 
+            . communication will be in bi-directional model with out any parent-child relationship 
+            . once a named pipe is established, several processes can use it for communication 
+            . in a typical scenario, a named pipe can have several writers 
+            . even after the communicating processes have finished the named pipe continue to exist 
+<!-- </details> -->
 <hr>
 <b id="id_threads_detail">threads</b>
 <img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-overview
-multicore programming
-multithreading models
-thread libraries
-implicit threading
-threading issues
-operating-system examples
-summary
+# overview
+    = a thread of execution is the smallest sequence of programmed instructions that can be managed independently by a scheduler 
+    = 1 or more threads are executing on a processes address space
+    = a sequence of control within a process 
+    = it is not 'thread' but 'threaded process', process with single thread or multiple threads 
+    = thread is a basic unit of CPU utilization
+    = a thread includes its own
+        - thread ID
+        - program counter
+        - register set
+        - stack
+    = a thread shares the following with other threads in the same process
+        - code section
+        - data section 
+        - other OS resources (such as open files and signals)
+    <img src="images/singleandmultithreadedprocess.jpg" alt="" width="25%" height="9%">
+    = traditional process is also known as heavyweight process and it has only a single thread of control 
+    = a web server process will have multiple threads
+        - one thread display text or images 
+        - another thread retrieves data from network
+    = 2 ways of handling client requests on a web server
+        - web server run as a singlethreaded process to listen requests. when the server receives a request it creates a separate process to service that request. this process-creation method is time consuming and resource intensive 
+        - web server run as multithreaded process and create separate threads to service new requests
+        <img src="images/multithreadedserverarchitecture.jpg" alt="" width="30%" height="9%">
+    = several threads operate in most of the operating system kernel, each thread performs a specific task such as managing devices, managing memory or interrupt handling  
+    = benefits of threads 
+        - responsiveness, when a user clicks a button 
+            . on a single threaded application, the application will be nonresponsive until the user request is completed
+            . on a multithreaded application, the application will be responsive as the user request is working as a new thread and application another 
+        - resource sharing, process share the resources to multiple threads on the same address space 
+        - economy, allocating memory and resources for process creation is costly. in solaris process creation is about thirty times slower than thread creation  
+        - scalability, single threaded process can run only on one processor but multithread process can run on multiple processors on multicore systems  
+# multicore programming 
+    = multicore is a microprocessor on a single integrated circuit with 2 or more separate processing unit called cores
+    <img src="images/multicoremultiprocessor.jpg" alt="" width="20%" height="9%">
+    = sequential, concurrency and parallelism 
+        - sequential, a task is a unit. after completing one task, start another task 
+        - concurrency, a slice of a task is a unit. CPU scheduler switches rapidly between processes for execution so that every process will have progress
+        - parallel, a slice of a task is a unit. if it can execute more than one task simultaneously
+        <img src="images/concurrency.jpg" alt="" width="30%" height="9%">
+    = opportunities for the programmers in multicore systems  
+        - identifying of tasks that are independent of one another and can run in parallel on individual cores
+        - balancing on the identified tasks which will do equal work of equal value so that the cores are occupied equally
+        - data splitting like the application is divided to tasks even the data needed to be divided as per the tasks  
+        - data dependency, execution of tasks needs to be synchronized if the data is depended on other tasks 
+        - testing and debugging, all the execution paths needs to be tested 
+    = types of parallelism
+        - data parallelism, same task and a subset of data set are distributed among multiple cores. distribution of data among multiple cores 
+        - task parallelism, different tasks and a subset of data set/different data set are distributed among multiple cores. distribution of tasks among multiple cores
+    = most applications use hybrid approach on selecting types of parallelism 
+    = support for threads can be provided in
+        - user level (user thread), managed by thread library in user space and with out kernel support 
+        - kernel level (kernel thread), managed directly by operating system 
+# multithreading models 
+    = many to one 
+        - maps many user threads to a kernel thread 
+        - disadvantage is one long running IO request to kernel will block entire process 
+        - only one thread can access the kernel at a time so multicore advantages can't be used 
+    = one to one 
+        - maps each user thread to kernel thread 
+        - multicore advantages can be used
+        - windows and linux systems have implemented this model 
+    = many to many 
+        - many user level threads to a smaller or equal number of kernel threads
+    = two-level
+        - hybrid of many to many and one to one
+        - many user level threads to a smaller or equal number of kernel threads
+        - but also allows one to one
+        <img src="images/multithreadingmodels.jpg" alt="" width="30%" height="9%">
+# thread libraries
+    = thread libraries provides the programmer with an API for creating and managing threads 
+    = 2 ways for implementing a thread libraries
+        - provide a library entirely in user space without kernel support. code and data structures are in kernel space. invoking a function in the library results a local call not a system call  
+        - provide a kernel level library supported directly by OS. code and data structure are in user space. invoking a function in the API typically results a system call 
+    = 3 main thread libraries 
+        - Pthread (POSIX thread), provided as either a user level or a kernel level library. this is POSIX specification not implementation 
+        - windows, provided as a kernel level library
+        - Java, library calls to JVM but internally call to host OS
+    = 2 general strategies for creating multiple threads 
+        - synchronous threading
+            . parent creates one or more children and waits for all the children to finish execution then resume operation
+            . parent is depended by children are independent 
+            . fork-join strategy
+            . eg, parent thread may combine the results calculated by its various children 
+        - asynchronous threading 
+            . parent creates one or more children and both execute concurrently
+            . parent and children threads are independent 
+            . ideally a very little data sharing 
+        <img src="images/syncronousandasynchronousthreading.jpg" alt="" width="20%" height="9%">
+# implicit threading
+    = let compiler creates and manages the threads instead of application developers
+    = 3 alternative approaches are
+        - thread pools 
+            . create a number of threads at process startup, place them into a pool and threads will wait for work
+            . when a server receives a request, it awakens a thread from the pool 
+            . once a thread completes its services, it returns to the pool 
+            . if no thread is available in the pool, the server waits until one becomes free  
+        - openMP
+            . it is a set of compiler directives as well as an API for programmers written in C,C++ and fortran 
+            . provide support in shared memory environment
+            . openMP identifies parallel regions as blocks of code that may run in parallel 
+            . application programmer insert compiler directives into their code at parallel regions 
+            . these directives will instruct openMP run-time library to execute those regions in parallel  
+            . openMP is available on several open source and commercial compilers for Linux, windows and Mac OS X systems 
+        - grand central dispatch
+            . a technology for Apple's MAC OS X and iOS OS 
+            . it is a combination of C language, an API and a run-time library 
+            . GCD manages the details of threads like openMP 
+            . GCD directives mark a block as a self contained unit of work 
+        - Intel's threading building blocks(TBB) 
+        - java.util.concurrent  
+# threading issues
+    = the fork() and exec() system calls
+        - fork() call will duplicate parent process 
+        - some UNIX systems chosen to have 2 versions of fork()
+            . new forked process will have all the threads duplicated
+            . new forked process will have only one thread duplicated, ie the invoking thread 
+        - exec() call will invoke a new program
+        - if a thread calls exec()
+            . replace entire process including all threads 
+        - consideration issues is that which fork() version needs to be selected
+        - if fork() is followed by an exec() then duplicating all threads are unnecessary
+        - if fork() is not followed by an exec() then duplicating all the threads are necessary  
+    = signal handling 
+        - signal : event generated by the software that are running in the CPU, signal is used in UNIX to notify the process that an event has occurred
+        - steps of signal 
+            . a signal is generated by the occurrence of a particular event 
+                * illegal memory access or division by zero
+                * terminating process by pressing ctrl+c or timer expire
+            . signal is delivered to a process synchronously or asynchronously
+                * synchronous, generation of an event and consumption of the signal by same process
+                * asynchronously, generated by an external event and consumption of the signal by another process
+            . handling the signal by the process, handled by one or two possible handlers
+                * default signal handler
+                * user-defined signal handler
+        - a default signal handler is associated with every signal and it might take a default action like
+            . terminate the process
+            . ignore the signal
+            . dump core 
+            . stop the process 
+            . continue the stopped process 
+        - user defined signal handler, will overrides default action
+        - signal can be delivered in a multithreaded environment
+            . to the thread to which the signal applies
+            . to every thread in the process 
+            . to certain threads in the process
+            . assign a specific thread to receive all the signals for the process  
+    = thread cancellation 
+        - terminating a thread before it has completed 
+        - the thread to be cancelled is called target thread 
+        - cancellation can be of 2 scenarios 
+            . asynchronous cancellation, one thread immediately terminates target thread 
+            . deferred cancellation, the target thread periodically checks whether it should terminate 
+    = thread local storage 
+        - thread needs its own copy of data which is called TLS 
+        - thread unique id is stored in TLS 
+    = scheduler activations 
+        - for implementing many to many and two level models a data structure is placed between user threads and kernel threads and this data structure is called light weight process(LWP)
+        <img src="images/lightweightprocess.jpg" alt="" width="5%" height="3%">
+        - LWP can be considered as a virtual processor on which application can schedule a usr thread to run 
+        - an application may require any number of LWPs to run efficiently
+        - CPU bound application running on a single processor(one thread) require one LWP but IO intensive application may require multiple LWPs to execute 
+        - one scheme for communication between user thread library and the kernel is known as scheduler activation 
+        - kernel must inform application about certain events and this procedure is known as 'upcall'. upcalls are handled by the thread library with an upcall handler which is running on the LWP 
+        - one event that triggers an upcall occurs when an application thread is about to block 
+        - kernel then makes an upcall to the application informing it that a thread is about to block and identifying the specific thread
+        - kernel then allocates a new LWP to the application 
+# extra
+    = difference between signals and interrupts
+        - signal : event generated by the software that are running in the CPU
+        - interrupt : event generated by the external components other than CPU 
+    = POSIX : Portable Operating System Interface is a family of standards specified by the IEEE Computer Society for maintaining compatibility between OSs
 <hr>
-<b id="id_processsynchronization_detail">process synchronization</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-background
-the critical-section problem
-peterson’s solution
-synchronization hardware
-mutex locks
-semaphores
-classic problems of synchronization
-monitors
-synchronization examples
-alternative approaches
-summary
+<b id="id_processsynchronization_detail">process synchronization(avoid data inconsistency)</b>
+# overview
+    = concurrent access to shared data may result in data inconsistency
+    = synchronization refers to one of the 2 distinct but related concepts   
+        - process synchronization
+        - data synchronization
+    = process synchronization refers to the idea that multiple processes are to join up or handshake at a certain point in order to reach an agreement or commit to a certain sequence of action 
+    = data synchronization refers to the idea of keeping multiple copies of a dataset in coherence with one another or to maintain data integrity
+    = race condition, several process access and manipulate same data concurrently and the outcome will depends on a particular order
+        - to guard against the race condition we need to ensure that only one process at a time can manipulate a variable or a block 
+        - to avoid race condition OS needs to synchronize the processes 
+# critical-section
+    = critical section, a segment of code in which process may change common variables, updating a table or writing a file etc
+    = critical section problem, is to design a protocol that 2 processes will not be allowed to execute the critical section simultaneously
+    = each process must request permission to enter its critical section. section of code implementing this request is 'entry section'
+    = followed by 'critical section', 'exit section' and remaining code is 'remaining section'
+    <img src="images/criticalsection.jpg" alt="" width="8%" height="9%">
+    = every critical-section solution must satisfy following 3 requirements
+        - mutual exclusion(exclusively only one process), at any point of time only one process should be present inside critical section   
+        - progress(competition is only between the processes those wanted to enter the critical section, other process will not be participating) do not postpone the selection indefinitely
+        - bounded waiting(no live lock, limited waiting to enter critical-section), the waiting time of the process to enter the critical section should be limited after the request 
+    = 2 approaches used to handle critical section in OS are 
+        - preemptive kernel : allows a process to be removed and replaced while running in kernel mode. this approach is more preferable in real-time programming 
+        - non preemptive kernel : does not allow the process to be preempted and it will run until the process exit, block or voluntarily yields control of the CPU 
+# peterson’s solution
+    = software-based solution to the critical-section problem 
+    = there is no guarantee that peterson’s solution will work on modern computer architecture but it provides a good algorithmic description of solving the critical section
+    = this solution works only for 2 process which is contesting for critical section. these 2 processes will share 2 variables(flag[2] and turn)
+    = how it works
+        - pi and pj are the 2 processes which is currently executing in their entry sections 
+        - let's say the order of execution is pi then pj 
+        - pi executes and sets the shared variable 'turn' as j
+        - pj executes and sets the shared variable 'turn' as i
+        - on the next time quanta of pi, 'while' statement will be false and enter its critical section meanwhile pj waits on its 'while' loop 
+        - after completing the critical section on pi will set 'flag[i] = false'
+        - on the next time quanta of pj, 'while' statement will be false and enter its critical section meanwhile pi will be on its remainder section 
+    = this solution satisfies all 3 requirements 
+    <img src="images/petersonssollutionimplementaion.jpg" alt="" width="30%" height="9%">
+# hardware based solutions 
+    = privileged instructions inbuilt in CPU
+    = 2 hardware instructions are 
+        - test and set, modify the content of a word
+        - compare and swap, swap content of 2 words
+    = all the above operations are atomic operations
+    = these solution can work for many processes 
+    = how 'test and set' solution works
+        - a shared variable called 'lock' will be used and data type will be boolean and initialized to false 
+        - first check or test the value of lock variable
+            . if lock = true(1), process will wait 
+            . if lock = false(0), process will set lock = true(1) and enter the critical section  
+        - after setting lock = 1 then enter the critical section
+        - all other process will be waiting the lock
+    = does it meet the requirements? 
+        - satisfies mutual exclusion requirement
+        - does not satisfies bounded waiting requirement
+    <img src="images/testandsetlockimplementaion.jpg" alt="" width="40%" height="9%">
+    = how 'compare and swap' solution works
+    <img src="images/compareandswapimplementaion.jpg" alt="" width="40%" height="9%">
+    = does it meet the requirements? 
+        - satisfies mutual exclusion requirement
+        - does not satisfies bounded waiting requirement
+# mutex locks
+    = another software based solution 
+    = mutex - mutual exclusion 
+    = acquire() function acquires the lock and release() function releases the lock
+    = main disadvantage of the above implementation is 'busy waiting' or 'spin lock', since the CPU will be busy of 'spin lock'
+    = advantage of spin lock is that no intermediate context switch is required which is costly 
+    = this method is implemented on multiprocessor system where one thread can spin on one processor while another thread performs critical section on another processor
+    = mutex is used on Pthreads 
+    <img src="images/muteximplementaion.jpg" alt="" width="25%" height="9%">
+# semaphores
+    = another software based solution 
+    = provide more sophisticated way than mutex 
+    = this solution make use of one integer variable called semaphore S 
+    = 2 types of semaphores
+        - counting semaphores(vast range of numbers)
+        - binary semaphores (0 or 1), can be used instead of mutual exclusion 
+    = counting semaphores, initialized to the number of resources 
+    = each process wants to use the resource first perform wait() then critical section and signal() 
+    = wait() is termed P for test 
+    = signal() is termed V to increment 
+    <img src="images/semaphore.jpg" alt="" width="25%" height="9%"> 
+# problems of synchronization
+    = 3 common synchronization problems
+        - bounded buffer problem (producer-consumer problem)
+        - readers writers problem 
+        - dining philosophers problem 
+    = solution for bounded buffer problem using semaphores
+        - a buffer of fixed number of slots and each one is capable of storing one unit of data 
+        - bounded buffer ie fixed buffer size
+        - bounded buffer problem statement
+            . producer must not fill data when the buffer is full
+            . consumer should not remove data when the buffer is empty 
+            . simultaneous insert and removal should not happen 
+        - producer process - fill/insert data to an empty slot
+        - consumer process - removes data from a filled slot
+        - solution for bounded buffer problem is implemented through 3 semaphores
+            . m(mutex), binary semaphore, value to acquire and release locks 
+            . empty, counting semaphore, number of empty slots. initial = total number of slots
+            . full, counting semaphore, number of filled slots. initial = 0 
+        <img src="images/boundedbufferproblemimplementationusingsemaphore.jpg" alt="" width="55%" height="9%">
+    = solution for readers-writers problem using semaphores
+        - readers-writers problem relates to shared object such as a file that is shared between multiple processes 
+        - readers-writers problem statement and objective
+            . a shared object can be accessed by 'n' readers, but only one writer at a time
+        - 2 kind of processes 
+            . reader processes - only to read
+            . writer processes - read and write
+        - solution is implemented through 2 semaphores and an integer value
+            . readcount, integer variable, how many processes are currently reading the shared object, initial=0
+            . mutex, binary semaphore, ensure mutual exclusion when the variable 'readcount' is updated. initial=1 
+            . rw_mutex, binary semaphore, ensure mutual exclusion when for writers. initial=1  
+            <img src="images/reader-writerproblem.jpg" alt="" width="25%" height="9%">
+    = solution for dining philosophers problem using semaphores
+        - problem statement
+            . allocating limited resources to multiple processes can cause deadlocks and starvation. so we need to build a solution to address that and allocate resources in a synchronized manner
+        - dining philosophers problem is a simple representation of the above problem ie, resource allocation 
+        - illustration
+            . 5 philosophers who spend their lives thinking and eating 
+            . from time to time a philosopher gets hungry and tries to pick up 2 chopsticks that are closest to her
+            . philosopher picks only one chopstick at a time, and she requires 2 chopstick to start eat
+            . when finish eating, she puts down both chopstick and starts thinking again 
+        - philosopher chooses 2 of her adjacent chopsticks. implement this solution via the semaphore 
+            . term each chopstick as a semaphore(chopsticks[5]), binary semaphore, all chopsticks initial=1 
+            <img src="images/diningphilosophersusingsemaphore.jpg" alt="" width="25%" height="9%">
+        - above semaphore solution wont avoid deadlocks, so remedies are  
+            . allow at most 4 philosophers to be sitting simultaneously at the table 
+            . pick up the chopsticks only if both chopsticks are available
+            . use asymmetric solution 
+                * odd numbered philosopher picks up left then right chopstick 
+                * even numbered philosopher picks up her right then left chopstick 
+# monitors
+    = using semaphore mechanism incorrectly can result in timing errors which is difficult to detect 
+    = to deal with these kind of errors researchers have developed a high-level language construct - the 'monitor' type
+    = syntax of monitor 
+        monitor monitor_name {
+            /* shared variable declarations */
+            function P1(.....) {
+                ......
+            }
+            function P1(.....) {
+                ......
+            }
+            function Pn(.....) {
+                ......
+            }
+            initialization_code(.....) {
+                .....
+            }
+        }
+    = the monitor type is an ADT that contains a set of programmer-defined functions that provide mutual exclusion within the monitor
+    = various processes needs to call the functions defined with in the monitor 
+    = monitor construct ensures that only one process at a time is active within the monitor 
+    = monitor construct is not sufficiently powerful for modeling some synchronization schemes, we may need to use condition variables 
+        condition x,y //pseudo code
+    = a condition variable in operating system programming is a special kind of variable which is used to communicate between threads when certain conditions becomes true
+    = operations that can be invoked on condition variable are wait() and signal()
+        x.wait()  // suspending an operation
+        x.signal() // resumes a suspended process 
+    = example for condition variables written using pthread conditional variables
+        pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+        pthread_cond_t x = PTHREAD_COND_INITIALIZER;
+
+        pthread_cond_wait(&x, &m);
+        pthread_cond_signal(&x);
+    = illustrate a monitor based solution deadlock free solution to the dining philosopher problem
+    = this solution imposes the restriction that a philosopher may pick up her chopsticks only if both of them are available
+        monitor diningphilosophers {
+            enum { THINKING, HUNGRY, EATING} state [5];
+            condition self [5];
+            
+            void pickup (int i) {
+                state [i] = HUNGRY;
+                test (i) ;
+                if (state [i]!= EATING)
+                    self [i].wait() ;
+            }
+            
+            void putdown(int i) {
+                state [i] = THINKING;
+                test ((i + 4) % 5);
+                test ((i + 1) % 5);
+            }
+            
+            void test (int i) {
+                if ((state [(i + 4) % 5] != EATING) && 
+                    (state [i] == HUNGRY) && 
+                    (state [(i + 1) % 5]!= EATING)) {
+                        state [i] = EATING;
+                        self [i].signal() ;
+                }
+            }
+            
+            initialization_code () {
+                for (int i = 0; i < 5; i++) 
+                    state [i] = THINKING; 
+            }
+        }
+    = decide which suspended process to resume within monitor
+        - simple solution is FCFS ordering, process waiting longer served first
+        - condition wait construct, a priority number is stored with name of the process and process with smallest priority number is resumed next
+            x.wait(time)
+# synchronization examples
+    = <to be filled>
+# 3 alternative approaches
+    = transactional memory
+    = openMP
+    = functional programming languages
+        - since functional languages ​​don't allow mutable condition, don't have to worry about problems like deadlock or race condition(erlang and scala)
+# extra
+    = bounded buffer lets multiple producers and multiple consumers share a single buffer. 
+      producers write data to the buffer and consumers read data from the buffer. 
+      producer may block if the buffer is full and consumers must block if the buffer is empty
+    = atomic operation, operation as a single unit, no interruption is allowed during this operation
+    = a 'busy wait' or 'spin lock' : waits for a condition to be satisfied in a loop without leaving the processor
+    = a language construct is a part of a program formed from one or more lexical tokens according to the rules of a programming language. 
+        public class MyClass {
+            //code . . . . . .
+        }
+    = a data structure is a particular way of storing and organizing data in a computer so that it can be used efficiently
+    = Abstract Data Types(ADT) are theoretical but when realized are called data structures
+    = A data type can be considered abstract when it is defined in terms of operations on it, and its implementation is hidden
+    = data type vs user defined data types vs abstract data type
+        - data type
+            . defined along with the language for storing data like numbers or characters etc and certain types of operations (+,*,-,/)
+        - user defined data type
+            . defined by user by extending built-in types by using structure, enum, typedef, classes, interfaces etc and certain types of operations
+                struct point {
+                    int x;
+                    int y;
+                }
+        - abstract data type
+            . these are similar to user defined data types (type + functions) but the implementation of functions are hidden from programmer
+    = difference of imperative and functional languages
+        - imperative, these languages are state based represented by variables which is mutable 
+        - functional, these languages don't maintain state, once the variable is set its immutable
+</details>  
 <hr>
 <b id="id_cpuscheduling_detail">cpu scheduling</b>
 <img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-basic concepts
-scheduling criteria
-scheduling algorithms
-thread scheduling
-multiple-processor scheduling
-real-time cpu scheduling
-operating-system examples
-algorithm evaluation
-summary
-<hr>
+
+# basic concepts
+    = https://www.quora.com/What-are-the-goals-of-CPU-scheduling ( how computer works)
+    = CPU scheduling is the process of choosing which process gets the CPU from the ready queue
+    = scheduling can be termed as the order of process selection
+    = it is kernel level thread not processes that are in fact being scheduled by the operating system to use CPU
+    = a process execution consists of cycles of
+        - CPU execution(CPU burst)
+        - IO wait(IO burst)
+    = CPU scheduler
+        - whenever the CPU becomes idle, the OS must select one of the processes from the ready queue to be executed 
+        - selection of the process is carried out by the short term schedular or CPU schedular 
+        <img src="images/cpuschedular.jpg" alt="" width="25%" height="9%">
+    = scheduling methods(preemptive/non-preemptive)
+        - circumstances for scheduling decisions 
+            . (1) process switches from running to waiting state(waiting for IO request completion or wait() for child process to terminate)
+            . (2) process terminates
+            . (3) process switches from running to ready state(interrupt occurs)
+            . (4) process switches from waiting to ready state(IO completion)
+        - in 1 and 2 no choice in terms of scheduling OS must select a new process
+        - in 3 and 4 there is a choice of scheduling
+        - preemptive, higher priority process will get the preference on CPU allocation(Windows 95,Mac OS X)
+        - non preemptive, once the process is allocated it will hold on to the CPU till it gets terminated or moved to waiting state(Windows 3.x)
+    = dispatcher
+        - dispatcher is a module that gives control of the CPU to the process which is selected by short term schedular
+        - functions involved are    
+            . switching context 
+            . switching to user mode 
+            . jumping to proper location in the user program to restart that program 
+        - dispatch latency, is the time it takes for the dispatcher to stop one process and start another process
+# general scheduling benchmark for comparing CPU scheduling algorithms
+    = scheduling criteria/benchmark
+        - CPU utilization
+            . time that CPU was busy 
+            . 40%, lightly loaded systems
+            . 90%, heavily loaded systems
+        - throughput
+            . number of processes completed per time unit 
+        - turnaround time 
+            . time of submission of a request to the time of completion 
+            . sum of waiting to get into memory + waiting in the ready queue + executing on the CPU + doing IO 
+        - response time 
+            . time from the submission of a request until the first response is produced 
+        - waiting time 
+            . sum of the time spent waiting in the ready queue 
+    = a desirable scheduling algorithm needs to have it is desirable to 
+        - maximize, CPU utilization and through put
+        - minimize, turnaround time, response time, waiting time
+# CPU scheduling algorithms will decide which process in the ready queue allocate to the CPU 
+    = first come first serve scheduling (non preemptive)
+        - process that request the CPU first gets the CPU first 
+        - implementation is easily managed with a FIFO queue 
+        - the new PCB will be added to the tail of the ready queue
+        - the CPU will be allocated to the PCB on the head, running process will be removed from the ready queue 
+        - on the negative side, the average wait time can vary significantly if the CPU burst times of the processes vary greatly  = shortest job first scheduling 
+        - convoy effect, all the other processes wait for one big process to get off the CPU 
+        - FCFS algorithm is non-preemptive
+    = shortest job first scheduling
+        - process that have shortest next CPU burst time will get the CPU(shortest-next-CPU-burst)
+        - if the next CPU burst time is equal for 2 processes, FCFS scheduling is used as a solution
+        - difficulty of SJF algorithm is to identify the length of the next CPU burst 
+        - SJF is used frequently in long term scheduling
+        - in batch systems user specifies the process time limit when he submit the job
+        - in short term scheduling there is no way to know the length of the next CPU burst 
+        - next CPU burst time is generally predicted as an 'exponential average' of the measured lengths of previous CPU bursts
+        - estimate[ i + 1 ] = alpha * burst[ i ] + ( 1.0 - alpha ) * estimate[ i ]  
+        - SJF algorithm can be either preemptive or non-preemptive
+        - preemptive SJF scheduling is sometimes called shortest-remaining-time-first scheduling 
+    = priority scheduling 
+        - a priority is associated with every process 
+        - CPU will be allocated to the process with highest priority
+        - equal priority processes are scheduled in FCFS order
+        - SJF is a special case of the general priority scheduling algorithm (process with larger next burst time will have the least priority and vice versa)
+        - there is no common understanding that a lower number means a higher or lower priority
+        - priority scheduling algorithm can be either preemptive or non-preemptive  
+        - when a process enters the ready queue with a higher priority its priority is compared to the priority of the currently running process
+            . a preemptive priority scheduling algorithm will preempt the currently running process
+            . a non-preemptive priority scheduling algorithm will continue with the currently running process
+        - major problem with priority scheduling is 'indefinite blocking' or 'starvation'. a process in the ready queue but not getting the CPU 
+        - a steady stream of higher priority processes can prevent a low priority process from ever getting the CPU 
+        - solution for starvation is 'aging'(gradually increasing the priority of the processes that wait in the system for a long time) 
+    = round robin scheduling 
+        - RR scheduling algorithm is designed for time sharing systems 
+        - RR scheduling algorithm is similar to FCFS but preemption is added to enable the system to switch between processes 
+        - a small unit of time is defined 'time quantum' or 'time slice', generally from 10 to 100 milliseconds in length 
+        - new process will attach to the tail of ready queue
+        - CPU schedular will choose the first process in the ready queue 
+        - set a timer to interrupt after 1 time quantum
+        - dispatches the process 
+        - if the CPU burst 
+            . is 1 time quantum, the process voluntarily release the CPU
+            . is more than 1 time quantum, the timer will goes off and this will cause an interrupt to the OS, context switch will be executed and the process will be put at the tail of the ready queue 
+        -  round robin scheduling algorithm is preemptive
+        - most modern systems have
+            . time quanta ranging from 10 to 100 milliseconds 
+            . context switch time is less than 10 microseconds 
+        - a rule of thumb is that 80% of the CPU burst should be shorter than the time quantum    
+    = multilevel queue scheduling 
+        - we can use multilevel queue scheduling when we can group/level processes like foreground or background processes 
+        - multilevel queue scheduling algorithm partitions the ready queue in to several separate queues
+        - each process will assign to a queue based on some property of the process, such as memory size, process priority or process type 
+        - each queue has its own scheduling algorithm, for eg, foreground queue is scheduled with RR algorithm and background queue with FCFS algorithm 
+        - in addition, there must be scheduling algorithm among queues, for eg, fixed priority preemptive scheduling  
+        - list of 5 queues in order of priority
+            1. system processes (highest priority)
+            2. interactive processes 
+            3. interactive editing processes 
+            4. batch processes 
+            5. student processes (lowest priority)
+        - a lower priority queue process will run only if all the above queue processes have completed
+        - preemption of low priority process will happen when a higher priority process enters the ready queue 
+        - algorithm provides a certain portion of time slice among queues, eg, 80% of time for foreground processes, RR algorithm will use among its processes and 20% time for background processes , FCFS algorithm will use among its processes    
+    = multilevel feedback queue scheduling 
+        - most general CPU scheduling algorithm and even most complex
+        - multilevel feedback queue scheduling algorithm bring some flexibility on multilevel queue scheduling algorithm
+        - multilevel feedback queue scheduling algorithm allows a process to move between queues for a variety of reasons
+        - eg, if a process uses too much of CPU time if a process wait too long in the lower priority queue or time quanta exceeds 
+        - this algorithm defined by following parameters 
+            . the number of queues
+            . scheduling algorithm for each queue
+            . method used to determine when to upgrade a process to a higher priority queue 
+            . method used to determine when to demote a process to a lower priority queue 
+            . method used to determine which queue a process will enter when that process needs service  
+# thread scheduling
+    = kernel is not aware of existence of threads but only process
+    = kernel picks a process and allocates to the CPU for certain time quantum
+    = threads are created in run time library
+    = 'run time system' picks up a thread in case of user level threads 
+        <img src="images/userlevelthreadscheduling.jpg" alt="" width="35%" height="9%">
+        - only threads with in a process can be selected, it is called process contention scope(PCS) or process local scheduling
+        - selected thread will run until for IO or process schedular context switches
+        - no clock interrupt in runtime system 
+        - if a thread finishes with in the quantum then start with another thread 
+        - if a thread is blocked for IO, entire process will get blocked    
+    = 'kernel' picks up a thread in case of kernel level threads 
+        <img src="images/kernellevelthreadscheduling.jpg" alt="" width="35%" height="9%">
+        - any threads with in the system can be selected it is called system contention scope(SCS) or system global scheduling
+        - doing thread scheduling at kernel level requires full context switch
+        - slower than the user level thread switching 
+        - if a thread is blocked for IO, entire process won't be blocked(can switch to another thread in the same process)
+# multiple-processor scheduling
+    = approaches to multiple processor scheduling
+        - asymmetric multiprocessing
+            . one master processor and others are slaves
+            . one processor(master processor) takes all scheduling decisions, IO processing and other system related activities
+            . other processors(salve processors) execute user code
+            . this asymmetric multiprocessing is simple because only one processor access the system data structures and reduces the need of data sharing
+        - symmetric multiprocessing(SMP)
+            . each processors are self scheduling 
+            . single common ready queue or private queue for every processors 
+            . virtually all modern OSs support SMP 
+    = processor affinity
+        - most SMP systems try to avoid migration of processes from one processor to another due to the high cost of invalidating and repopulating of data in caches
+        - processor affinity, most SMP systems attempt to keep a process running on the same processor 
+        - process will have an affinity for the processor in which it is currently running 
+        - 2 forms of processor affinity 
+            - soft affinity, OS will attempt to keep a process on a single processor, but it is possible to for a process to migrate between processors  
+            - hard affinity, OS will force the process to run on a subset of processors
+        - many systems provide both forms of processor affinity  
+    = load balancing 
+    = multicore processors 
+# real-time cpu scheduling
+# operating-system examples
+# algorithm evaluation
+# extra
+    = CPU scheduler will choose a process from ready queue
+    <img id="myImg" src="images/cpuschedular.jpg" alt="CPU schedular" style="width:100%;max-width:100px">
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div> 
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById("myImg");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+        
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+        
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+    </script>
+    = dispatcher is the module that gives control of the CPU to the process selected by the short term scheduler
+    = 2 scheduling methods are
+        - preemptive, when a higher priority process reaches the ready queue, the currently running process moves out from the CPU and the higher priority process gets the CPU cycle 
+        - non preemptive, once the process is allocated it will hold on to the CPU till it gets terminated or moved to waiting state
+    <img id="myImg" src="images/scheduling methods.jpg" alt="scheduling methods" style="width:100%;max-width:100px">
+    = timer, main task of a timer is to interrupt the CPU after a specific period of time
+    = eg, working of timer 
+        - CPU will have a hardware timer that fires an interrupt every X milliseconds  
+        - OS will initialize a counter with the amount of time(X) that a program is allowed to run
+        - for every clock tick the counter is decremented by 1 
+        - once the counter becomes negative, timer interrupt fires and interrupt handler will make the CPU start executing another process(or thread) 
+    = process, is a running picture of a program or running instance of a program
+    = thread, a process contain multiple flow of execution called multi threads
+    = for a linux kernel there is no concept of thread. each thread is viewed by kernel as a separate process 
+    = LWP are threads in the user space that is an interface for user level thread to kernel level thread
+    <img src="images/LWP.jpg" alt="" width="7%" height="9%">
+    = NUMA,non uniform memory access, CPU will have faster access to some part of main memory than to other parts 
+    <img src="images/numaandcpuscheduling.jpg" alt="" width="20%" height="9%">
+    __________removed lines from PCS and SCS
+    = kernel level CPU scheduling algorithms will decide which process in the ready queue allocate to the CPU
+    = scheduling of threads involves in 2 levels
+        - scheduling of user level threads to kernel level threads via lightweight process
+        - scheduling of kernel level threads by the system scheduler
+    = 2 controls needs to be specified for user level threads
+        - contention scope (competition among the user level thread to access kernel level threads)
+        - allocation domain
+    = contention scope can be classified as 
+        - process contention scope(PCS) or process local scheduling
+            . contention among threads with in the same process
+            . highest priority thread to access the kernel via LWP 
+            . application developer defines the priority
+        - system contention scope(SCS) or system global scheduling
+            . contention among all the threads in the system
+
+    = to run on CPU user level threads are mapped to a kernel level thread or light weight process(LWP) directly or indirectly 
+    = kernel level threads are being scheduled by OS
+    = user level threads are managed by thread library 
+    = contention scope refers to the scope in which threads compete for the use of physical CPUs 
+    = 2 basic ways of scheduling 'threads' in OS are  
+        - process contention scope(PCS) or process local scheduling
+            . thread library uses PCS to schedules user level threads to run on an available LWP
+            . the contention takes place among the threads belongs to the same process 
+            . PCS is done according to the priority, user level threads priority is set by the programmer 
+            . on many to one and many to many models uses PCS 
+        - system contention scope(SCS) or system global scheduling
+            . kernel uses SCS to decide which kernel thread uses LWP to get the CPU
+            . the contention for CPU is among all threads on the system 
+            . one to one model only uses SCS
+    = Pthread scheduling
+        -  POSIX provide API that allows PCS or SCS during thread creation 
+            . PTHREAD_SCOPE_PROCESS for PCS scheduling
+            . PTHREAD_SCOPE_SYSTEM for SCS scheduling 
+    
+    <hr>
 <b id="id_deadlocks_detail">deadlocks</b>
 <img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 system model
