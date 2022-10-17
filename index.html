@@ -110,7 +110,7 @@
     <summary id="id_somethingextra_detail">drafted part</summary>
 <table border="0" width="100%">
     <tr>
-        <td align="middle"><img src="images/os-birds-eye-view.jpg" alt="" width="35%"></td>
+        <td align="middle"><img src="images/0.os-birds-eye-view.jpg" alt="" width="35%"></td>
         <td>    
             <b><a href="#id_introduction_detail" style="color: rgb(0, 0, 0); text-decoration: none;">introduction</a></b>
             <b><a href="#id_operatingsystemstructures_detail" style="color: rgb(0, 0, 0); text-decoration: none;">operating-system structures</a></b>
@@ -143,13 +143,13 @@
     = operating system manages computer hardware, system programs, application programs and users
     = an operating system acts as an intermediary between the user of a computer and the computer hardware
     = operating system is the program running at all times on the computer called the kernel
-    <img src="images/kernel.jpg" alt="" width="15%" height="10%">
+    <img src="images/1.1.kernel.jpg" alt="" width="15%" height="10%">
     = 2 other types of programs along with the kernel are
         - system programs (associated with the operating system but are not necessarily part of the kernel)
         - application programs (not associated with the operation of the system)
     = mobile operating systems often includes a middleware (set of software frameworks provides services to application developers)
 # computer-system organization
-    <img src="images/moderncomputersystem.jpg" alt="" width="20%" height="10%">
+    <img src="images/1.2.moderncomputersystem.jpg" alt="" width="20%" height="10%">
     = computer-system components
         - a modern computer system consists of one or more CPUs and a number of device controllers connected through a common bus that provide access to shared memory
         - each device controller is in charge of a specific type of device
@@ -168,9 +168,9 @@
         - when a CPU is interrupted, it stops the current operation and transfers to a fixed location
         - that fixed location contains the starting address of service routine for the interrupt
         - on completion, the CPU resumes the interrupted computation
-        <img src="images/interrupttimeline.jpg" alt="" width="70%" height="40%">
+        <img src="images/1.3.interrupttimeline.jpg" alt="" width="70%" height="40%">
     = storage structure
-        <img src="images/storagehierarchy.jpg" alt="" width="20%" height="10%">
+        <img src="images/1.4.storagehierarchy.jpg" alt="" width="20%" height="10%">
         - all forms of memory provide an array of bytes and every byte has an address
         - main memory mainly implemented in a semiconductor technology called DRAM-dynamic random access memory is called RAM
         - SSD, solid state drive is a non-volatile memory and stores data in a DRAM array during normal operation but also contains a hidden magnetic hard disk and a battery
@@ -178,7 +178,7 @@
         - another non-volatile form is flash memory which doesn't require power to retain its contents and its a variant of EEPROM-electrically erasable programmable read-only memory 
         - another non-volatile form is NVRAM which is DRAM with battery power
     = i/o structure 
-        <img src="images/devicecontrolleranddriver.jpg" alt="" width="17%" height="10%">        <img src="images/diffdevicecontrolleranddriver.jpg" alt="" width="30%" height="25%">
+        <img src="images/1.5.1.devicecontrolleranddriver.jpg" alt="" width="17%" height="10%">        <img src="images/1.5.2.diffdevicecontrolleranddriver.jpg" alt="" width="30%" height="25%">
         - every operating system have a device driver for each device controller
         - device driver is a software program with which the device controller interacts with the operating system
         - device controller is a hardware unit attached to the I/O bus and works like an interface between a device and a device driver
@@ -199,7 +199,7 @@
 # computer-system architecture
     = execution of instructions
         - Von Neumann architecture was first published by John von Neumann in 1945
-        <img src="images/vonneumannarchitecture.jpg" alt="" width="17%" height="10%">
+        <img src="images/1.6.vonneumannarchitecture.jpg" alt="" width="17%" height="10%">
         - it is based on the stored-program computer concept, where instruction data and program data are stored in the same memory
         - interaction with CPU and memory unit is achieved through load and store instructions to specific memory addresses
         - load - from main memory to internal registers within the CPU
@@ -207,7 +207,7 @@
         - need arises, CPUs explicitly loads instructions from main memory for execution
         - instructions are processed via fetch-execute cycle
         - CPU can load instruction only from main memory(RAM-random access memory)
-        <img src="images/fetchexecutecycle.jpg" alt="" width="20%" height="8%">
+        <img src="images/1.7.fetchexecutecycle.jpg" alt="" width="20%" height="8%">
     = single processor systems
         - one main general purpose processor 
         - may have many special purpose processor(disk, keyboard and graphics controllers)
@@ -220,7 +220,7 @@
         - 2 types of multiprocessing systems are currently in use
             . asymmetric multiprocessing: boss-worker relationship, OS tasks are carried only by the master processor which will allocate work to the worker processor. Sun Microsystems SunOS version 4
             . symmetric multiprocessing(SMP): peer relationship, all the processors can take part in the OS tasks based on availability. Sun Microsystems SunOS version 5
-            <img src="images/symmetricmultiprocessing.jpg" alt="" width="20%" height="8%">
+            <img src="images/1.8.symmetricmultiprocessing.jpg" alt="" width="20%" height="8%">
             . differentiator for asymmetric/symmetric multiprocessing systems are either hardware or software. software can be written to allow only one boss and multiple workers
         - terms used for reliability of computer system
             . graceful degradation, ability to provide service proportional to the level of surviving hardware
@@ -229,7 +229,7 @@
             . UMA-uniform memory access, access to any RAM from any CPU takes same amount of time
             . NUMA-non-uniform memory access, access to some part of RAM may takes long amount of time. OS can minimize the NUMA penalty through resource management
         - multicore, including multiple computing cores in a single chip
-        <img src="images/multicore.jpg" alt="" width="15%" height="25%">
+        <img src="images/1.9.multicore.jpg" alt="" width="15%" height="25%">
             . all multicore systems are multiprocessor systems
         - blade servers, multiple processor boards and I/O boards and networking boards are placed in the same chassis
             . each blade processor boards boots independently and runs its own OS
@@ -254,12 +254,12 @@
         - to avoid conflict on data DLM-distributed lock manager is included in cluster technology
         - SAN-storage area network technology allows many systems to attach to a pool of storage
         - cluster software can assign the application to run on any host that is attached to the SAN
-        <img src="images/structureofaclusteredsystem.jpg" alt="" width="20%" height="25%">
+        <img src="images/1.10.structureofaclusteredsystem.jpg" alt="" width="20%" height="25%">
 # operating-system structure
     = OS provides an environment within which programs are executed
     = lots of jobs will kept initially on the disk in the job pool
     = job is a collection of program + input data + control instructions
-    <img src="images/job.jpg" alt="" width="9%" height="13%">
+    <img src="images/1.11.job.jpg" alt="" width="9%" height="13%">
     = operating system will bring subset of jobs from job pool to memory since memory is small to accommodate all the jobs 
     = OS picks and begins to execute one of the job
     = some of the types of operating systems
@@ -306,7 +306,7 @@
         - with the mode bit we can distinguish between a task that is executed on behalf of the operating system or the user 
         - when a computer system is executing on behalf of the user application the system is in user mode
         - user application requests a service from the operating system via a system call the system will transition to kernel mode
-        <img src="images/transitionfromkernelmodetousermode.jpg" alt="" width="35%" height="25%">
+        <img src="images/1.12.transitionfromkernelmodetousermode.jpg" alt="" width="35%" height="25%">
         - privileged machine instructions, those machine instructions that may cause harm to OS
         - dual-mode, only 2 modes(user mode and kernel mode). privileged machine instructions can execute only on kernel mode else treat it as illegal if on user mode. eg, controlling I/O devices
         - multi-mode, more than 2 modes(CPU uses more than one bit). Intel 64 family of CPUs supports four privilege levels
@@ -360,16 +360,16 @@
         - information is normally kept in some storage system(such as main memory) 
         - the required information will take directly from cache, if its not available we use the information from the source putting a copy in to the cache
         - performance of various levels of storage
-        <img src="images/performanceofvariouslevelsofstorage.jpg" alt="" width="30%" height="15%">
+        <img src="images/1.13.performanceofvariouslevelsofstorage.jpg" alt="" width="30%" height="15%">
         . migration of integer A from disk to register
-        <img src="images/migrationofintegerAfromdisktoregister.jpg" alt="" width="20%" height="14%">
+        <img src="images/1.14.migrationofintegerAfromdisktoregister.jpg" alt="" width="20%" height="14%">
     = I/O systems
         - managing and hiding the peculiarities of specific hardware devices through I/O subsystem
         - I/O subsystem consists of
             . memory management components including buffering, caching and spooling
             . general device-driver interface
             . device-driver for specific hardware devices
-            <img src="images/kernel-io-subsystem.jpg" alt="" width="25%" height="15%">
+            <img src="images/1.15.kernel-io-subsystem.jpg" alt="" width="25%" height="15%">
 # protection and security
     = a computer with multiple users and executing multiple process, then access to data needs to be regulated
     = protection is any mechanism for controlling the access of processes or users of the resources defined by a computer system
@@ -385,7 +385,7 @@
 <hr>
 <b id="id_operatingsystemstructures_detail">operating-system structures</b>
 # operating-system service
-<img src="images/operating-systems-services.jpg" alt="" width="30%" height="10%">
+<img src="images/2.1.operating-systems-services.jpg" alt="" width="30%" height="10%">
     = services provides functions that are helpful for the users
         - user interface   
             . command line interface(CLI)
@@ -445,13 +445,13 @@
     = these calls generally available as routines in c, c++ 
     = but certain low level tasks are written in assembly language instructions
     = list of system calls for reading a file contents and write to another file
-    <img src="images/listofsystemcalls.jpg" alt="" width="15%" height="15%">
+    <img src="images/2.2.listofsystemcalls.jpg" alt="" width="15%" height="15%">
     = even a simple program will make heavy use of OS and systems will execute 1000nds of system calls per second
     = application programmer design programs according to the application programming interface(API)
     = difference between API and system call
         - API helps to exchange data between various systems, devices and applications
         - system call allows a program to access services from the kernel of the operation system
-        <img src="images/APIvsSystemcall.jpg" alt="" width="35%" height="40%">
+        <img src="images/2.3.APIvsSystemcall.jpg" alt="" width="35%" height="40%">
         - behind the scene the functions that make up an API typically invoke the actual system calls on behalf of the application programmer
         - most common APIs are
             . Windows API
@@ -511,12 +511,12 @@
 <!-- </details> -->
 <hr>
 <b id="id_processes_detail">processes</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # process concept
     = process is program in execution or runtime picture of a program
     = process can be called a job or a task
     = process contains following sections
-    <img src="images/processinmemory.jpg" alt="" width="10%" height="5%">
+    <img src="images/3.1.processinmemory.jpg" alt="" width="10%" height="5%">
         - text section : code and value of processor's registers
         - data section : global variables
         - heap section : area for dynamic allocation
@@ -527,7 +527,7 @@
         - entering the name of the executable file on CLI
     = process itself can be a running environment for code, JVM process, java code is executed inside JVM
     = as a process executes, it changes state, in one of the following
-    <img src="images/processstate.jpg" alt="" width="25%" height="5%">
+    <img src="images/3.2.processstate.jpg" alt="" width="25%" height="5%">
         - new, the process is being created
         - ready, waiting to get the processor
         - running, instruction is being executed
@@ -535,7 +535,7 @@
         - waiting, for some event to occur(IO completion or reception of a signal) 
     = each process is represented in the OS by a process control block(PCB, task control block)
     = PCB is a data structure used by OS to store all the information about a process
-    <img src="images/processcontrolblock.jpg" alt="" width="10%" height="5%">
+    <img src="images/3.3.processcontrolblock.jpg" alt="" width="10%" height="5%">
         - process state : new, running, terminated, etc
         - process number or id
         - program counter : address of the next instruction to be executed for this process
@@ -553,16 +553,16 @@
     = data structure for ready queue is generally on linked list
     = head part contains pointers to the first PCB and tail part contains pointers to the final PCB on ready queue header
     = each PCB includes a pointer field that points to the next PCB in the ready queue
-    <img src="images/variousqueues.jpg" alt="" width="20%" height="5%">
+    <img src="images/3.4.variousqueues.jpg" alt="" width="20%" height="5%">
     = process is getting allocated to CPU from ready queue
-    <img src="images/queuingdiagramofprocessscheduling.jpg" alt="" width="23%" height="5%">
+    <img src="images/3.5.queuingdiagramofprocessscheduling.jpg" alt="" width="23%" height="5%">
     = process migrate among various scheduling queues throughout its life time. OS must select processes from these queues
     = the selection process is carried out by the appropriate 'process schedulers'
     = 3 type of schedulers are 
         - long term scheduler, select the process from job pool(typically from mass storage) and loads to memory
         - medium term scheduler, to remove a process from main memory to secondary memory(swap out) and later reintroduced to main memory from secondary memory(swap in)
         - short term scheduler, select for CPU execution
-        <img src="images/typesofschedulers.jpg" alt="" width="23%" height="5%">
+        <img src="images/3.6.typesofschedulers.jpg" alt="" width="23%" height="5%">
     = 'frequency of execution' is the differentiation factor between schedulers
         - often short term scheduler will execute once every 100 milliseconds
         - ofter long term scheduler will execute once in minutes and so
@@ -589,7 +589,7 @@
             . the parent continues to execute concurrently with the child
             . the parent wait for the child to get terminated
         - address space is a range of valid addresses in memory that are available for a process
-        <img src="images/addressspace.jpg" alt="" width="23%" height="5%">
+        <img src="images/3.7.addressspace.jpg" alt="" width="23%" height="5%">
         - 2 address space possibilities for a new process
             . child is a duplicate of parent process, so it has the same program and data as the parent
             . child process has a new program got loaded into it
@@ -604,7 +604,7 @@
             . both process will continue to execute at the very next instruction after the fork() code line
             . exec() system call loads a binary file into memory and starts execution 
             . after exit the child process the parent process will re-start again
-            <img src="images/processcreationusingforksystemcall.jpg" alt="" width="30%" height="10%">
+            <img src="images/3.8.processcreationusingforksystemcall.jpg" alt="" width="30%" height="10%">
         - Windows way of new process creation  
             . process are created in the Windows API using CreateProcess() function
             . the child process will be loading a specified program into its address space
@@ -627,7 +627,7 @@
         - process table, is a data structure maintained by the OS to facilitate context switching, scheduling and other activities
         - process table is an array of PCBs 
         - each entry in the table is called 'context block'
-        <img src="images/processtable.jpg" alt="" width="20%" height="10%">
+        <img src="images/3.9.processtable.jpg" alt="" width="20%" height="10%">
         - even after the exit() call the entry in the process table will remain until parent calls wait(), since this table contains process exit status 
         - a process that is terminated and parent not yet called the wait() is known as 'zombie'
         - process identifier of the zombie process ans its entry in the process table are released
@@ -642,7 +642,7 @@
     = 2 models of IPC   
         - message passing, sharing takes place by means of message exchange 
         - shared memory, region of memory is shared between cooperating process
-        <img src="images/interprocesscommunication.jpg" alt="" width="20%" height="5%">
+        <img src="images/3.10.interprocesscommunication.jpg" alt="" width="20%" height="5%">
     = both models are common in OS
     = message passing is easy for 
         - small amount of data sharing
@@ -730,7 +730,7 @@
             . an identifier specifying the function to execute and the parameters to pass to that function 
         - message response to the client is 
         . output will be send to the client in a separate message 
-    <img src="images/executionofRPCcall.jpg" alt="" width="25%" height="5%"> 
+    <img src="images/3.11.executionofRPCcall.jpg" alt="" width="25%" height="5%"> 
     = pipes 
         - pipe acts as a conduit/channel allowing 2 processes to communicate 
         - one of the simplest way for IPC 
@@ -758,7 +758,7 @@
 <!-- </details> -->
 <hr>
 <b id="id_threads_detail">threads</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # overview
     = a thread of execution is the smallest sequence of programmed instructions that can be managed independently by a scheduler 
     = 1 or more threads are executing on a processes address space
@@ -774,7 +774,7 @@
         - code section
         - data section 
         - other OS resources (such as open files and signals)
-    <img src="images/singleandmultithreadedprocess.jpg" alt="" width="25%" height="9%">
+    <img src="images/4.1.singleandmultithreadedprocess.jpg" alt="" width="25%" height="9%">
     = traditional process is also known as heavyweight process and it has only a single thread of control 
     = a web server process will have multiple threads
         - one thread display text or images 
@@ -782,7 +782,7 @@
     = 2 ways of handling client requests on a web server
         - web server run as a singlethreaded process to listen requests. when the server receives a request it creates a separate process to service that request. this process-creation method is time consuming and resource intensive 
         - web server run as multithreaded process and create separate threads to service new requests
-        <img src="images/multithreadedserverarchitecture.jpg" alt="" width="30%" height="9%">
+        <img src="images/4.2.multithreadedserverarchitecture.jpg" alt="" width="30%" height="9%">
     = several threads operate in most of the operating system kernel, each thread performs a specific task such as managing devices, managing memory or interrupt handling  
     = benefits of threads 
         - responsiveness, when a user clicks a button 
@@ -793,12 +793,12 @@
         - scalability, single threaded process can run only on one processor but multithread process can run on multiple processors on multicore systems  
 # multicore programming 
     = multicore is a microprocessor on a single integrated circuit with 2 or more separate processing unit called cores
-    <img src="images/multicoremultiprocessor.jpg" alt="" width="20%" height="9%">
+    <img src="images/4.3.multicoremultiprocessor.jpg" alt="" width="20%" height="9%">
     = sequential, concurrency and parallelism 
         - sequential, a task is a unit. after completing one task, start another task 
         - concurrency, a slice of a task is a unit. CPU scheduler switches rapidly between processes for execution so that every process will have progress
         - parallel, a slice of a task is a unit. if it can execute more than one task simultaneously
-        <img src="images/concurrency.jpg" alt="" width="30%" height="9%">
+        <img src="images/4.4.concurrency.jpg" alt="" width="30%" height="9%">
     = opportunities for the programmers in multicore systems  
         - identifying of tasks that are independent of one another and can run in parallel on individual cores
         - balancing on the identified tasks which will do equal work of equal value so that the cores are occupied equally
@@ -827,7 +827,7 @@
         - hybrid of many to many and one to one
         - many user level threads to a smaller or equal number of kernel threads
         - but also allows one to one
-        <img src="images/multithreadingmodels.jpg" alt="" width="30%" height="9%">
+        <img src="images/4.5.multithreadingmodels.jpg" alt="" width="30%" height="9%">
 # thread libraries
     = thread libraries provides the programmer with an API for creating and managing threads 
     = 2 ways for implementing a thread libraries
@@ -847,7 +847,7 @@
             . parent creates one or more children and both execute concurrently
             . parent and children threads are independent 
             . ideally a very little data sharing 
-        <img src="images/syncronousandasynchronousthreading.jpg" alt="" width="20%" height="9%">
+        <img src="images/4.6.syncronousandasynchronousthreading.jpg" alt="" width="20%" height="9%">
 # implicit threading
     = let compiler creates and manages the threads instead of application developers
     = 3 alternative approaches are
@@ -917,7 +917,7 @@
         - thread unique id is stored in TLS 
     = scheduler activations 
         - for implementing many to many and two level models a data structure is placed between user threads and kernel threads and this data structure is called light weight process(LWP)
-        <img src="images/lightweightprocess.jpg" alt="" width="5%" height="3%">
+        <img src="images/4.7.lightweightprocess.jpg" alt="" width="5%" height="3%">
         - LWP can be considered as a virtual processor on which application can schedule a usr thread to run 
         - an application may require any number of LWPs to run efficiently
         - CPU bound application running on a single processor(one thread) require one LWP but IO intensive application may require multiple LWPs to execute 
@@ -948,7 +948,7 @@
     = critical section problem, is to design a protocol that 2 processes will not be allowed to execute the critical section simultaneously
     = each process must request permission to enter its critical section. section of code implementing this request is 'entry section'
     = followed by 'critical section', 'exit section' and remaining code is 'remaining section'
-    <img src="images/criticalsection.jpg" alt="" width="8%" height="9%">
+    <img src="images/5.1.criticalsection.jpg" alt="" width="8%" height="9%">
     = every critical-section solution must satisfy following 3 requirements
         - mutual exclusion(exclusively only one process), at any point of time only one process should be present inside critical section   
         - progress(competition is only between the processes those wanted to enter the critical section, other process will not be participating) do not postpone the selection indefinitely
@@ -969,7 +969,7 @@
         - after completing the critical section on pi will set 'flag[i] = false'
         - on the next time quanta of pj, 'while' statement will be false and enter its critical section meanwhile pi will be on its remainder section 
     = this solution satisfies all 3 requirements 
-    <img src="images/petersonssollutionimplementaion.jpg" alt="" width="30%" height="9%">
+    <img src="images/5.2.petersonssollutionimplementaion.jpg" alt="" width="30%" height="9%">
 # hardware based solutions 
     = privileged instructions inbuilt in CPU
     = 2 hardware instructions are 
@@ -987,9 +987,9 @@
     = does it meet the requirements? 
         - satisfies mutual exclusion requirement
         - does not satisfies bounded waiting requirement
-    <img src="images/testandsetlockimplementaion.jpg" alt="" width="40%" height="9%">
+    <img src="images/5.3.testandsetlockimplementaion.jpg" alt="" width="40%" height="9%">
     = how 'compare and swap' solution works
-    <img src="images/compareandswapimplementaion.jpg" alt="" width="40%" height="9%">
+    <img src="images/5.4.compareandswapimplementaion.jpg" alt="" width="40%" height="9%">
     = does it meet the requirements? 
         - satisfies mutual exclusion requirement
         - does not satisfies bounded waiting requirement
@@ -1001,7 +1001,7 @@
     = advantage of spin lock is that no intermediate context switch is required which is costly 
     = this method is implemented on multiprocessor system where one thread can spin on one processor while another thread performs critical section on another processor
     = mutex is used on Pthreads 
-    <img src="images/muteximplementaion.jpg" alt="" width="25%" height="9%">
+    <img src="images/5.5.muteximplementaion.jpg" alt="" width="25%" height="9%">
 # semaphores
     = another software based solution 
     = provide more sophisticated way than mutex 
@@ -1013,7 +1013,7 @@
     = each process wants to use the resource first perform wait() then critical section and signal() 
     = wait() is termed P for test 
     = signal() is termed V to increment 
-    <img src="images/semaphore.jpg" alt="" width="25%" height="9%"> 
+    <img src="images/5.6.semaphore.jpg" alt="" width="25%" height="9%"> 
 # problems of synchronization
     = 3 common synchronization problems
         - bounded buffer problem (producer-consumer problem)
@@ -1032,7 +1032,7 @@
             . m(mutex), binary semaphore, value to acquire and release locks 
             . empty, counting semaphore, number of empty slots. initial = total number of slots
             . full, counting semaphore, number of filled slots. initial = 0 
-        <img src="images/boundedbufferproblemimplementationusingsemaphore.jpg" alt="" width="55%" height="9%">
+        <img src="images/5.7.boundedbufferproblemimplementationusingsemaphore.jpg" alt="" width="55%" height="9%">
     = solution for readers-writers problem using semaphores
         - readers-writers problem relates to shared object such as a file that is shared between multiple processes 
         - readers-writers problem statement and objective
@@ -1044,7 +1044,7 @@
             . readcount, integer variable, how many processes are currently reading the shared object, initial=0
             . mutex, binary semaphore, ensure mutual exclusion when the variable 'readcount' is updated. initial=1 
             . rw_mutex, binary semaphore, ensure mutual exclusion when for writers. initial=1  
-            <img src="images/reader-writerproblem.jpg" alt="" width="25%" height="9%">
+            <img src="images/5.8.reader-writerproblem.jpg" alt="" width="25%" height="9%">
     = solution for dining philosophers problem using semaphores
         - problem statement
             . allocating limited resources to multiple processes can cause deadlocks and starvation. so we need to build a solution to address that and allocate resources in a synchronized manner
@@ -1056,7 +1056,7 @@
             . when finish eating, she puts down both chopstick and starts thinking again 
         - philosopher chooses 2 of her adjacent chopsticks. implement this solution via the semaphore 
             . term each chopstick as a semaphore(chopsticks[5]), binary semaphore, all chopsticks initial=1 
-            <img src="images/diningphilosophersusingsemaphore.jpg" alt="" width="25%" height="9%">
+            <img src="images/5.9.diningphilosophersusingsemaphore.jpg" alt="" width="25%" height="9%">
         - above semaphore solution wont avoid deadlocks, so remedies are  
             . allow at most 4 philosophers to be sitting simultaneously at the table 
             . pick up the chopsticks only if both chopsticks are available
@@ -1171,7 +1171,7 @@
 </details>  
 <hr>
 <b id="id_cpuscheduling_detail">cpu scheduling</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 
 # basic concepts
     = https://www.quora.com/What-are-the-goals-of-CPU-scheduling ( how computer works)
@@ -1184,7 +1184,7 @@
     = CPU scheduler
         - whenever the CPU becomes idle, the OS must select one of the processes from the ready queue to be executed 
         - selection of the process is carried out by the short term schedular or CPU schedular 
-        <img src="images/cpuschedular.jpg" alt="" width="25%" height="9%">
+        <img src="images/6.1.cpuschedular.jpg" alt="" width="25%" height="9%">
     = scheduling methods(preemptive/non-preemptive)
         - circumstances for scheduling decisions 
             . (1) process switches from running to waiting state(waiting for IO request completion or wait() for child process to terminate)
@@ -1283,7 +1283,9 @@
             5. student processes (lowest priority)
         - a lower priority queue process will run only if all the above queue processes have completed
         - preemption of low priority process will happen when a higher priority process enters the ready queue 
-        - algorithm provides a certain portion of time slice among queues, eg, 80% of time for foreground processes, RR algorithm will use among its processes and 20% time for background processes , FCFS algorithm will use among its processes    
+        - algorithm provides a certain portion of time slice among queues
+            . 80% of time for foreground processes, RR algorithm will use among its processes
+            . 20% time for background processes , FCFS algorithm will use among its processes    
     = multilevel feedback queue scheduling 
         - most general CPU scheduling algorithm and even most complex
         - multilevel feedback queue scheduling algorithm bring some flexibility on multilevel queue scheduling algorithm
@@ -1300,14 +1302,14 @@
     = kernel picks a process and allocates to the CPU for certain time quantum
     = threads are created in run time library
     = 'run time system' picks up a thread in case of user level threads 
-        <img src="images/userlevelthreadscheduling.jpg" alt="" width="35%" height="9%">
+        <img src="images/6.2.userlevelthreadscheduling.jpg" alt="" width="35%" height="9%">
         - only threads with in a process can be selected, it is called process contention scope(PCS) or process local scheduling
         - selected thread will run until for IO or process schedular context switches
         - no clock interrupt in runtime system 
         - if a thread finishes with in the quantum then start with another thread 
         - if a thread is blocked for IO, entire process will get blocked    
     = 'kernel' picks up a thread in case of kernel level threads 
-        <img src="images/kernellevelthreadscheduling.jpg" alt="" width="35%" height="9%">
+        <img src="images/6.3.kernellevelthreadscheduling.jpg" alt="" width="35%" height="9%">
         - any threads with in the system can be selected it is called system contention scope(SCS) or system global scheduling
         - doing thread scheduling at kernel level requires full context switch
         - slower than the user level thread switching 
@@ -1332,13 +1334,138 @@
             - hard affinity, OS will force the process to run on a subset of processors
         - many systems provide both forms of processor affinity  
     = load balancing 
+        - on SMP systems its very important to have the workload balanced among all the processors 
+        - load balancing attempts to keep the workload evenly distributed across all processors in an SMP system 
+        - load balancing is 
+            . important on systems where each processor has its own private queue of processes to execute 
+            . not important on systems with common queue, these systems will choose a runnable process immediately from the common ready queue 
+        - contemporary OS support SMP and each processor does have a private queue of eligible processes - 
+        - 2 general approaches of load balancing
+            . push migration, a specific task periodically checks the load on each processor and if it finds an imbalance evenly distributes the load by moving(pushing) 
+                              processes from overloaded to idle or less busy processors
+            . pull migration, occurs when an idle processor pulls a waiting task from a busy processor
+        - Linux schedular and ULE schedular(for FreeBSD) implements both techniques 
+        - load balancing often counteracts the advantages of processor affinity
     = multicore processors 
-# real-time cpu scheduling
+        - multicore, multiple processor cores on the same physical chip
+        - OS considers every core as separate physical processor
+        - multicore processors are faster and consume less power than systems in which each processor has its own physical chip 
+        - memory stall, the waiting period for data to become available after the processor access memory
+        <img src="images/6.4.memorystall.jpg" alt="" width="25%" height="9%">
+        - processor can wait 50% of its time waiting for data to become available from memory 
+        - as a remedy of the above situation, recent processor designs have implemented multithreaded processor cores(multiple hardware threads assigned to each core)
+        - one thread stalls the core can switch to another thread
+        <img src="images/6.5.multithreadedmulticorewithmemorystall.jpg" alt="" width="25%" height="9%">
+        - from OS perspective each hardware thread appears as a logical processor that is available to run a software thread
+        - the ultraSPARC T3 CPU has 16 cores per chip & 8 hardware threads per core = 128 logical processors
+        - 2 ways to multithread a processing core
+            . coarse grained multithreading, a thread execute on a processor until a long-latency event occurs(memory read) then switch to another thread to begin execution 
+            . fine grained multithreading(interleaved), switching between threads at a much finer level of granularity. the processor architectural 
+              design includes logic for thread switching, as a result the cost of switching is very small 
+        - multithreaded multicore processor requires 2 different levels of scheduling 
+            . decide on which software thread to run on each hardware thread(logical processor). eg, algorithm RR,FCFS, etc
+            . decide on which hardware thread to run on each core
+                * ultraSPARC T3 CPU used RR algorithm to schedule the eight hardware threads to each core
+                * Intel Itanium(dual core with 2 hardware managed threads per core), each hardware threads assigned with a hardware urgency value ranging from 0 to 7, 0 lowest.
+                  it has 5 different events that may trigger a thread switch according to the highest urgency value
+# real time cpu scheduling
+    = feature of a real time operating system is to respond immediately to a real time process as soon as that process requires the CPU
+    = this type of OS is guaranteed to perform critical tasks on a defined time constraints
+    = real time systems are event based
+    = switching and processing of tasks
+        - real time systems switches tasks based on priority
+        - time sharing systems switches tasks based on clock interrupts 
+    = 2 types of real time systems are 
+        - soft real time systems, no guarantee as to when the critical process will be scheduled. only guarantee that critical tasks will get preference. 
+        - hard real time systems, guarantee that the process will be serviced by its deadline 
+    = minimizing latency
+        - event latency, is the amount of time that elapse from when an event occur to when it is serviced 
+        - 2 types of latencies affect the performance of real time systems are 
+            . interrupt latency, period of time from the arrival of an interrupt at the CPU to the start of the interrupt service routine 
+            . dispatch latency, the amount of time scheduling dispatcher to stop one process and start another 
+        - OS need to minimize interrupt and dispatch latency to ensure that real time systems receive immediate attention   
+    = periodic processes, process require the CPU at constant intervals(periods)
+    = certain characteristics of the periodic processes 
+        - once periodic process acquires CPU it has fixed processing time 't' 
+        - a deadline 'd' by which it has to service by CPU 
+        - a total period p of processing 
+        - it can be expressed as 0 <= t <= d <= p 
+    = priority based scheduling 
+        - priority with preemption 
+        - windows has 32 different priority levels and priority values of 16 to 31 are reserved for real time processes 
+        - providing preemptive priority based algorithm only guarantees soft real time functionality 
+        - in this scheduling 
+            . process has to announce the deadline requirements to the schedular 
+            . use the technique known as admission control algorithm
+                * accept/admit the process for execution with a guarantee that to complete on time 
+                * reject the request if it can't guarantee that the task will be serviced by its deadline 
+    = rate monotonic scheduling 
+        - static priority with preemption
+        - if a lower priority process is running and a higher priority process becomes available to run, it will preempt the lower priority process 
+        - higher priority task will get CPU more often 
+        - on entering the system, each periodic task is assigned a priority inversely based on its duration
+            . shorter period will assign a higher priority 
+            . longer period will assign a lower priority
+        - this algorithm assumes that the processing time of a period process is the same for each CPU burst  
+    = earliest deadline first scheduling 
+        - dynamically assigns priorities according to deadline
+        - priority assignment 
+            . earlier the deadline the higher the priority 
+            . later the deadline the lower the priority
+        - the OS must announce the deadline requirements of the new runnable process
+        - process priority may have to be adjusted to reflect the deadline of the newly runnable process 
+    = proportional share scheduling 
+        - apportioning CPU time between applications
+            . allocating T shares among all applications 
+            . an application receives N shares of time 
+        - T = 100 and processes A = 50 shares, B = 15 shares, C = 20 shares, (50+15+20) 85 shares allocated out of 100
+        - if a new process D request 30 shares the admission controller will deny the entry to system
+        - proportional share scheduling work in conjunction with an admission control 
+    = POSIX real time scheduling
+        - POSIX standard also provides extensions for real time computing, POSIX.1b 
+        - 2 POSIX classes are
+            . SCHED_FIFO
+            . SCHED_RR  
+        - SCHED_FIFO, schedule threads according to a first come first serve policy, no time slicing among threads of equal priority. highest priority thread at front will run until it terminates or blocks 
+        - SCHED_RR, round robin policy, it provides time slicing among threads of equal priority   
 # operating-system examples
-# algorithm evaluation
+# algorithm evaluation or comparing scheduling algorithm 
+    = deterministic modeling 
+        - this evaluation method takes a predetermined workload value and evaluates each algorithm using that workload
+        - CPU burst time can be a workload 
+        - processes P1,P2,P3,P4 and CPU burst time 10,29,3,7 and quantum 10 milliseconds 
+        - average waiting time for 
+            . FCFS(non-preemptive)  = (0+10+39+42)/4 = 22.75
+            . SJF(non-preemptive)   = (10+20+0+3)/4 = 8.25
+            . RR(preemptive)        = (0+32+20+23)/4 = 18.75
+        - deterministic modeling is possible only if the processes are not varying much  
+    = queueing model
+        - queueing model or queue theory 
+        - queueing model will have a queue and a server 
+        - by knowing arrival rate and service rate of a process we can compute utilization, average queue length, average wait time, etc 
+        - we can extract following 3 values from queue 
+            . n the average queue length 
+            . W average waiting time in the queue 
+            . λ lambda, average arrival time of process in the queue 
+        - using little's formula, we can compute one of the 3 variables if we know the other 2
+            . n = λ * W 
+        - CPU is a server and queue is processes which are to be served  
+            . CPU has ready queue 
+            . IO system has device queue 
+    = simulations 
+        - collect data from real processes on real machine (trace data) 
+        - simulator has a variable representing a clock, as this variable increases the simulator modifies the trace data 
+        - simulation can take long time to run
+        - collected data can be used for comparing scheduling algorithm  
+    = implementation 
+        - completely accurate way to compare scheduling algorithm is to implement them on real machines
+        - but this approach is very costly  
+            . expense on coding the algorithm
+            . modify the OS 
+            . user will not like an OS which is always changing 
 # extra
     = CPU scheduler will choose a process from ready queue
-    <img id="myImg" src="images/cpuschedular.jpg" alt="CPU schedular" style="width:100%;max-width:100px">
+    <img id="myImg" src="images/6.1.cpuschedular.jpg" alt="CPU schedular" style="width:100%;max-width:100px">
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <span class="close">&times;</span>
@@ -1371,7 +1498,7 @@
     = 2 scheduling methods are
         - preemptive, when a higher priority process reaches the ready queue, the currently running process moves out from the CPU and the higher priority process gets the CPU cycle 
         - non preemptive, once the process is allocated it will hold on to the CPU till it gets terminated or moved to waiting state
-    <img id="myImg" src="images/scheduling methods.jpg" alt="scheduling methods" style="width:100%;max-width:100px">
+    <img id="myImg" src="images/6.e.scheduling methods.jpg" alt="scheduling methods" style="width:100%;max-width:100px">
     = timer, main task of a timer is to interrupt the CPU after a specific period of time
     = eg, working of timer 
         - CPU will have a hardware timer that fires an interrupt every X milliseconds  
@@ -1382,9 +1509,9 @@
     = thread, a process contain multiple flow of execution called multi threads
     = for a linux kernel there is no concept of thread. each thread is viewed by kernel as a separate process 
     = LWP are threads in the user space that is an interface for user level thread to kernel level thread
-    <img src="images/LWP.jpg" alt="" width="7%" height="9%">
+    <img src="images/6.e.LWP.jpg" alt="" width="7%" height="9%">
     = NUMA,non uniform memory access, CPU will have faster access to some part of main memory than to other parts 
-    <img src="images/numaandcpuscheduling.jpg" alt="" width="20%" height="9%">
+    <img src="images/6.e.numaandcpuscheduling.jpg" alt="" width="20%" height="9%">
     __________removed lines from PCS and SCS
     = kernel level CPU scheduling algorithms will decide which process in the ready queue allocate to the CPU
     = scheduling of threads involves in 2 levels
@@ -1400,7 +1527,7 @@
             . application developer defines the priority
         - system contention scope(SCS) or system global scheduling
             . contention among all the threads in the system
-
+            . one to one model only uses SCS
     = to run on CPU user level threads are mapped to a kernel level thread or light weight process(LWP) directly or indirectly 
     = kernel level threads are being scheduled by OS
     = user level threads are managed by thread library 
@@ -1419,10 +1546,9 @@
         -  POSIX provide API that allows PCS or SCS during thread creation 
             . PTHREAD_SCOPE_PROCESS for PCS scheduling
             . PTHREAD_SCOPE_SYSTEM for SCS scheduling 
-    
     <hr>
 <b id="id_deadlocks_detail">deadlocks</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 system model
 deadlock characterization
 methods for handling deadlocks
@@ -1434,7 +1560,7 @@ summary
 part three memory management
 <hr>
 <b id="id_mainmemory_detail">main memory</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 background
 swapping
 contiguous memory allocation
@@ -1446,7 +1572,7 @@ example: arm architecture
 summary
 <hr>
 <b id="id_virtualmemory_detail">virtual memory</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 background
 demand paging
 copy-on-write
@@ -1461,7 +1587,7 @@ summary
 part four storage management
 <hr>
 <b id="id_massstoragestructure_detail">mass-storage structure</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 overview of mass-storage structure
 disk structure
 disk attachment
@@ -1473,7 +1599,7 @@ stable-storage implementation
 summary
 <hr>
 <b id="id_filesysteminterface_detail">file-system interface</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 file concept
 access methods
 directory and disk structure
@@ -1483,7 +1609,7 @@ protection
 summary
 <hr>
 <b id="id_filesystemimplementation_detail">file-system implementation</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 file-system structure
 file-system implementation
 directory implementation
@@ -1496,7 +1622,7 @@ example: the wafl file system
 summary
 <hr>
 <b id="id_i/osystems_detail">i/o systems</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 overview
 i/o hardware
 application i/o interface
@@ -1507,7 +1633,7 @@ performance
 summary
 <hr>
 <b id="id_protection_detail">protection</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 goals of protection
 principles of protection
 domain of protection
@@ -1520,7 +1646,7 @@ language-based protection
 summary
 <hr>
 <b id="id_security_detail">security</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 the security problem
 program threats
 system and network threats
@@ -1533,7 +1659,7 @@ an example: windows 7
 summary
 <hr>
 <b id="id_virtualmachines_detail">virtual machines</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 overview
 history
 benefits and features
@@ -1544,7 +1670,7 @@ examples
 summary
 <hr>
 <b id="id_distributedsystems_detail">distributed systems</b>
-<img src="images/os-birds-eye-view.jpg" alt="" width="9%" height="9%">
+<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 advantages of distributed systems
 types of network based operating systems
 network structure
