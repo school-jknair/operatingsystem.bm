@@ -510,8 +510,8 @@
     = a disk that has a boot partition is called boot disk or system disk
 <!-- </details> -->
 <hr>
+<b id="id_processes_detail">processes management</b>
 <b id="id_processes_detail">processes</b>
-<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # process concept
     = process is program in execution or runtime picture of a program
     = process can be called a job or a task
@@ -758,7 +758,6 @@
 <!-- </details> -->
 <hr>
 <b id="id_threads_detail">threads</b>
-<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 # overview
     = a thread of execution is the smallest sequence of programmed instructions that can be managed independently by a scheduler 
     = 1 or more threads are executing on a processes address space
@@ -1168,11 +1167,9 @@
     = difference of imperative and functional languages
         - imperative, these languages are state based represented by variables which is mutable 
         - functional, these languages don't maintain state, once the variable is set its immutable
-</details>  
+<!-- </details>   -->
 <hr>
 <b id="id_cpuscheduling_detail">cpu scheduling</b>
-<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-
 # basic concepts
     = https://www.quora.com/What-are-the-goals-of-CPU-scheduling ( how computer works)
     = CPU scheduling is the process of choosing which process gets the CPU from the ready queue
@@ -1358,6 +1355,7 @@
         <img src="images/6.5.multithreadedmulticorewithmemorystall.jpg" alt="" width="25%" height="9%">
         - from OS perspective each hardware thread appears as a logical processor that is available to run a software thread
         - the ultraSPARC T3 CPU has 16 cores per chip & 8 hardware threads per core = 128 logical processors
+        <img src="images/6.6.multithreadedmulticorehwcoreandswcore.jpg" alt="" width="10%" height="9%">
         - 2 ways to multithread a processing core
             . coarse grained multithreading, a thread execute on a processor until a long-latency event occurs(memory read) then switch to another thread to begin execution 
             . fine grained multithreading(interleaved), switching between threads at a much finer level of granularity. the processor architectural 
@@ -1546,18 +1544,185 @@
         -  POSIX provide API that allows PCS or SCS during thread creation 
             . PTHREAD_SCOPE_PROCESS for PCS scheduling
             . PTHREAD_SCOPE_SYSTEM for SCS scheduling 
-    <hr>
+<!-- </details>   -->
+<hr>
 <b id="id_deadlocks_detail">deadlocks</b>
-<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-system model
-deadlock characterization
-methods for handling deadlocks
-deadlock prevention
-deadlock avoidance
-deadlock detection
-recovery from deadlock
-summary
-part three memory management
+# introduction
+    = a situation in which 2 processes sharing the same resource are effectively preventing each other from accessing the resources 
+    <img src="images/7.1.deadlock.jpg" alt="" width="9%" height="9%">      <img src="images/7.2kansasfoolishlaw.jpg" alt="kansas foolish law" width="14%" height="13%">
+    = process P1 requesting R2 with out releasing R1, realizing that P1 complete with R1
+    = process P2 requesting R1 with out releasing R2, realizing that P2 complete with R2
+    = deadlock, resources which has requested by a process are held by other waiting processes
+    = OS typically do not provide deadlock prevention facilities, it remains the responsibility of programmers to ensure that they design deadlock free programs
+# system model
+    = system resources are
+        - physical resource 
+            . CPU cycles
+            . IO devices 
+        - logical resource 
+            . files
+            . semaphore and mutex locks 
+    = system table, OS will record resource status(free or allocated) and a related process in a system table 
+    = resource waiting queue, if a process requests a resource that is currently allocated then this process will be added to the queue of waiting for the same resource 
+# deadlock characterization
+    = necessary conditions 
+        - a deadlock can occur if the following 4 conditions exist simultaneously, avoid any of the condition to prevent deadlock  
+            . mutual exclusion, at least one non sharable resource 
+            . hold and wait, holding one resource and waiting for another  
+            . no preemption, the process will not release the resource voluntarily for another process 
+            . circular wait, P1 waiting for R2 which is allocated to P2 and P2 waiting for R1 which is allocated to P1
+            <img src="images/7.1.deadlock.jpg" alt="" width="9%" height="9%"> 
+    = resource allocation graph 
+        - dead lock can be described more precisely with a graph called resource allocation graph 
+        - how process utilize a resource
+            . request, if the requested resource is not available immediately then the process must wait until it acquire the resource 
+            . use, process operate on resource 
+            . release, process releases the resource 
+        - various kinds of request and releases 
+            . devices - request() and release()
+            . file - open() and close()
+            . memory system calls - allocate and free()
+            . semaphore - wait() and signal()
+            . mutex lock - acquire() and release()
+        - P to R is request and R to p is allocation
+        <img src="images/7.3.resourceallocationgraph.jpg" alt="" width="9%" height="9%"> 
+        - if graph contains no cycle
+            . no deadlock
+        - if graph contains cycle 
+            . if one instance per resource type then deadlock will occur
+            . if several instances per resource type then possibility of deadlock
+# methods for handling deadlocks
+    = use a protocol to prevent or avoid deadlocks 
+    = allow the system to enter a deadlocked state, detect it and recover 
+    = ignore the problem and pretend that deadlock never occur in the system (most used by linux and windows, upto the application programmer to handle the deadlock)
+# deadlock prevention
+    = a deadlock can occur if all the following conditions are true 
+        - if none of the resources can be shared (mutual exclusion)
+        - if a process can hold a resource and wait for other resource (hold and wait) 
+        - if a resource is allocated then it can't be preempted (no preemption) 
+        - if a process can hold a resource and wait for other resource (circular wait)  
+    = in order to prevent a deadlock we need to make any of the above conditions to false 
+    = mutual exclusion
+        - make at least one resource sharable to avoid(false) mutual exclusion
+        - this can be done on a case-by-case basis
+            . a read-only file can be made a shareable resource 
+            . a dvd writer can't be made a shareable resource
+    = hold and wait
+        - avoid holding one resource but waiting for another resource to start execution
+        - 2 methods which can be implemented 
+            . each processes to request all the required resources before it begins execution 
+            . allow process to request more resources only after releasing all the resources that it is currently allocated  
+        - disadvantages are 
+            . in first method, resource utilization will be very low since resource will be allocated but not used for long period
+            . in second method, starvation is possible in case of popular resources
+    = no preemption
+        - allow process/resource to have preemption 
+        - probable method 1
+            . time quantum for each resource
+            . the running process will preempt the resource after a time quantum 
+        - probable method 2 
+            . if a process is currently holding some resources and requests for some more resource, which cannot be allocated immediately
+                * the process will preempt 
+                * currently holding resource and requested resource will be populated in to the waiting resource list 
+                * the process restarts only when all resources are available 
+        - probable method 3
+            . if a process request some resources, which cannot be allocated immediately
+                * if a resource is allocated to a process in the wait queue, the resource is preempted from the waiting process and allocated to the requesting process
+                * If the resource is not available and is not blocked in a waiting queue, the requesting process must wait 
+            . this method is often applied to resources whose state can be easily saved and restored later such as CPU registers and memory space 
+    = circular wait 
+        - to avoid circular wait 
+            . number each resources
+            . provision to request resources only in ascending order
+# deadlock avoidance
+    = in order to avoid deadlock, we need to identify a 'safe sequence' of processes and we need to make sure that system never enters in to an unsafe state
+    = one way to avoid deadlocks is to get additional information about how resources
+        - currently available resources
+        - currently allocated resources to every process 
+        - future requests and releases of each process 
+    = 2 deadlock avoidance algorithms
+        - safe state
+            . a state is safe if the system can allocate resources to each process in some order and still avoid a deadlock 
+            . a system is in a safe state only if there exists a 'safe sequence' to allocate resources
+            . the system can be in unsafe state if there is a possibility of deadlock. system won't be able to fulfill the request of all processes
+        - resource allocation graph algorithm
+            . if only one instance of resource then a variant of resource allocation graph can be applied to avoid deadlock 
+            . edges in graph 
+                * assignment edge(resource to process)
+                * request edge(process to resource)
+                * claim edge (dotted line, process to resource)
+            . before the start of process, all the edges must appear in the graph 
+            . this algorithm make sure that the cycle formation is avoided, so that deadlock wont occur 
+        - banker's algorithm (safety algorithm) 
+            . if resource having multiple instances then we can use bankers algorithm
+            . banker's algorithm is a resource allocation and deadlock avoidance algorithm, determining whether requests can be safely granted 
+            . it will check if allocation of any resource will lead to deadlock and build a 'safe sequence' we are trying to build a 'safe sequence' of processes  
+            . 'safe sequence' is a sequence of processes where the resource allocation can happen with out a deadlock
+            . predetermined matrix are 
+                * total(totally available resources)
+                * max(maximum resource requirement per process)
+                * allocated(currently allocated resources per process)
+                * work(available,currently freely available resources)
+                * need(additional resources required per process) 
+            . maximum requirement of resources for any process should not be more than the total resources
+            . step 1 populate predetermined matrix values
+            . step 2 calculate and modify need value(maximum - allocated) for all the process 
+            . step 3 loop through all the processes to identify the 'safe sequence'
+                * need <= work
+                * if its true then update free resources(work+allocated) 
+                * if its false select next process 
+                * cycle through all the process until all the processes are included in the 'safe sequence' list 
+            . illustration https://www.youtube.com/watch?v=d_Kr-Z-UzEg
+        - banker's algorithm (resource request algorithm) 
+            . predetermined matrix are similar for both banker's algorithm
+            . step 1 populate predetermined matrix values
+            . step 2 calculate and modify values(allocation, available,need) only for the process which is requested  
+                * 1 if request <= need, goto step 2, otherwise raise an error 
+                * 2 if request <= available goto step 3, otherwise process must wait 
+                * 3 modify the matrix according to the formula  
+                    available = available - request
+                    allocation = allocation + request 
+                    need = need - request 
+            . step 3 loop through all the processes to identify the 'safe sequence'(similar as banker's algorithm safety algorithm)
+            . illustration https://www.youtube.com/watch?v=GUnNgMgQlGo
+# deadlock detection
+    = if the system doesn't employee deadlock prevention or deadlock avoidance algorithm then there is a possibility of having deadlock on processes, then
+        - the system has to examine whether a deadlock has occurred
+        - if yes, implement an algorithm to recover from deadlock
+    = different detections methods are 
+        - if the resource is only having a single instance, then use a variant of 'resource allocation graph' ie 'wait for graph'
+        - if the resource is having multiple instances, then use kind of 'bankers algorithm'
+    = single instance of each resource type 
+        - algorithm uses a variant of resource allocation graph which is 'wait for graph' to detect a deadlock 
+        - connect processes by removing resource nodes on a resource allocation graph if one of the process is requesting a resource and same resource is allocated to another process
+        - a deadlock can be detected, if a cycle is formed on a 'wait for graph'
+        - the system needs to maintain the wait for graph and periodically invoke an algorithm that searches for a cycle in the graph 
+        - illustration https://www.youtube.com/watch?v=ad2BXy21DLs&list=PLTwXRHDoo-A8NY12YjOXNIx7YpGXNKfyG&index=6
+    = several instances of a resources type 
+        - we need to use kind of 'bankers algorithm' to detect for deadlock
+        - the data structures used for this algorithm
+            . available(work), number of available resources of each system  
+            . allocation, currently allocated to each process 
+            . request, current request of each process 
+        - illustration https://www.youtube.com/watch?v=ad2BXy21DLs&list=PLTwXRHDoo-A8NY12YjOXNIx7YpGXNKfyG&index=6
+    = detection algorithm usage(when should we invoke)
+        - invoke the detection algorithm for every resource request 
+        - invoke the detection algorithm at defined intervals ie, once every hour or when CPU becomes 40%
+# recovery from deadlock
+    = 2 recovery mechanisms once we detect a deadlock 
+        - process termination 
+        - resource preemption 
+    = process termination 
+        - abort all deadlocked processes 
+        - abort one process at a time until the deadlock cycle is eliminated
+            . 1 abort a process 
+            . 2 apply deadlock detection algorithm
+            . if deadlock cycle detected, start from step 1 else process continues its execution   
+    = resource preemption
+        - selecting a victim(process/resource)
+        - rollback, once a resource is preempted from a process, the process can't continue the normal operation, better to do a total rollback
+        - starvation, if a process is selected as a victim multiple times then starvation can happen. we must ensure that a process can be picked as a victim only a finite time 
+</details>
 <hr>
 <b id="id_mainmemory_detail">main memory</b>
 <img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
