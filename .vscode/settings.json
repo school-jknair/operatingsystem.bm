@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "Interprocess",
+        "multiuser",
         "pthread",
         "readcount"
     ]
