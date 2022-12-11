@@ -105,6 +105,7 @@
                                                                                                         Operating System Concepts, Ninth Edition by Abraham Silberschatz, Peter Baer Galvin and Greg Gagne
                                                                                                         https://www.youtube.com/channel/UCVZD4ph7tqdAbVO4URH9QGw/videos (need to refer)
                                                                                                         https://www.youtube.com/watch?v=GryqH5TiNmc  (need to refer)
+                                                                                                        https://youtu.be/wJBDIwU5m20   (need to refer)
                                                                                                                    </cite>
 <hr>
 <details>
@@ -780,7 +781,7 @@
         - one thread display text or images 
         - another thread retrieves data from network
     = 2 ways of handling client requests on a web server
-        - web server run as a singlethreaded process to listen requests. when the server receives a request it creates a separate process to service that request. this process-creation method is time consuming and resource intensive 
+        - web server runs as a single threaded process to listen for requests. server creates a separate process for each request. This process-creation method is time-consuming and resource-intensive 
         - web server run as multithreaded process and create separate threads to service new requests
         <img src="images/4.2.multithreadedserverarchitecture.jpg" alt="" width="30%" height="9%">
     = several threads operate in most of the operating system kernel, each thread performs a specific task such as managing devices, managing memory or interrupt handling  
@@ -1947,7 +1948,7 @@
         - page number will be used as the index in page table 
         - page table contains the mapping of the page number to the base address of each page in physical memory
         - base address of each page combined with page offset is the physical address that is sent to the memory unit 
-        <img src="images/8.8.paginghardware.jpg" alt="" width="13%" height="9%">   <img src="images/8.9.pageingexample.jpg" alt="" width="13%" height="9%">
+        <img src="images/8.8.paginghardware.jpg" alt="" width="13%" height="9%">   <img src="images/8.9.pageingexample.jpg" alt="" width="13%" height="9%">  <img src="images/8.9.1.pageingexample.jpg" alt="" width="13%" height="9%">
         - page size like the frame size is defined by hardware 
         - size of a page is a power of 2 varying between 512(2^9) bytes and 1GB(2^30) per page depending on computer architecture
         - example 
@@ -2021,7 +2022,7 @@
             . advantage of having ASID in TLB
                 * it provides address space protection 
                 * allow TLB to have several different processes simultaneously else the TLB must be flushed every time context switch happens 
-            . hit ration, the percentage of times that the page number of interest is found in the TLB 
+            . hit ratio, the percentage of times that the page number of interest is found in the TLB 
             . example(time in nanoseconds,ns)  
                 * TLB hit will take 100ns to get the byte from memory 
                 * TLB miss will take 200ns to get the byte from memory(100ns for the memory access to get the page table for frame number and another 100ms to get the byte from memory) 
@@ -2050,6 +2051,14 @@
         - only one copy of reentrant code needs to kept in physical memory for multiple processes 
 # structure of the page table 
     = if the page table size is too large to fit in a frame, the page table must be broken to do in the frame. common structuring(breaking) techniques follows 
+    = each page table entry contains 
+        - frame number,f : physical frame number 
+        - valid/invalid,v : whether the requested page is present or absent. valid(1)/invalid(0). if absent it will generate a page fault 
+        - protection,p : protect the page based on the value like read/write/execute
+        - reference,r : 0 means this page is referring for the first time, 1 means this page has used in past as well 
+        - caching,c : enable or disable, do we need to keep in cache 
+        - dirty,d : modify, whether the page has modified after it was swapped in 
+        <img src="images/8.14.2.pagetableentry.jpg" alt="" width="9%" height="9%"> 
     = hierarchical paging 
         - example to highlight the need
             . physical address space=256MB(2^8+2^20=28bits) and frame size=4KB(2^2+2^10=12bits)
@@ -2091,11 +2100,12 @@
         <img src="images/8.16.hasedpagetable.jpg" alt="" width="9%" height="9%">
     = inverted page tables 
         - usually each process has an associated page table and has one entry for each page 
-        - drawback of this method(one process one page table) is these page tables may consume large amounts of physical memory 
-        - solution for this problem is 'inverted page table'
+        - drawback of that method(one process one page table) is these page tables may consume large amounts of physical memory 
+        - solution for this drawback is 'inverted page table'
         - inverted page table
-            . OS maintains one common page table for all the processes 
-            . inverted page table lists all of the pages currently loaded in memory 
+            . purpose of this form of page management is to reduce the amount of physical memory needed to track virtual-to-physical address translations 
+            . accomplish this saving by creating a table that has one entry per page of physical memory indexed by <process-id,page-number> 
+            . inverted page table stores the information of page to physical frame 
             . it is inverted which means we look at the mapping from a physical memory frame back to a virtual page, despite the fact that the translation starts from virtual address just like normal  
             . logical address in this system consists of a triple 'process id,page number,offset'
             . inverted page table is then searched for a match 
@@ -2184,7 +2194,8 @@
     = difference between RAM and associative memory(CAM,content addressable memory)
         - RAM, user supplies a memory address and RAM returns the data word stored at the address 
         - CAM, user supplies data word and CAM searches its entire memory and returns the list of addresses where the data word was located
-    = ASID(address space identifiers) a unique identifier for process
+        <img src="images/8.e.1.RAMvsCAM.jpg" alt="" width="9%" height="9%">
+    = ASID(address space identifiers) a unique identifier for process and assigned by the OS
     = how many bits required to address     
         - for 4KB addresses 12bits required(2^2 is 4 and 2^10 is KB so 2+10=12) 
         - for 256MB addresses 28bits required(2^8 is 256 and 2^20 is MB so 8+20=28)
@@ -2199,15 +2210,16 @@
     = intel designs and manufacture chips but ARM only designs then it licenses its design to chip manufactures
     = Apple has licensed the ARM design for its iPhone and iPad mobile devices
     = several Android based smartphones use ARM processor  
-</details>
+<!-- </details> -->
 <hr>
 <b id="id_virtualmemory_detail">virtual memory</b>
 # background
+    = virtual memory is a memory management technique where secondary memory can be used as if it were a part of the main memory
+    = programmers are already limited by multiple constraints. one of them is the size of the program. if we can find a solution, the programmer fraternity will be happy
     = the instruction being executed must be in physical memory 
     = 2 approaches are      
     = place the entire logical address space in physical memory this limits the size of a program to the size of physical memory 
     = place partial program in memory and other part in secondary memory, programmer can write programs for an extremely large virtual address space , this technique is called virtual memory
-    = virtual memory is a memory management technique where secondary memory can be used as if it were a part of the main memory
     = this is made possible by swapping pages in/out of memory to secondary storage  
     = few advantages are  
         - allows the execution of processes that are not completely in memory 
@@ -2228,6 +2240,7 @@
     = suppose a program starts with a list of available options from which the user is to select, instead of loading all 'options' code, load only the selected 'options' code to execute  
     = demand paging is a technique to implement virtual memory
     = demand paging is similar to a paging system with swapping where processes reside in secondary memory 
+    = process can start quickly by demand page the page that contains the first instruction
     = only the necessary page will be swapped-in, the term is 'pager'
     <img src="images/9.3.transferofpagedspacetocontiguousdiskspace.jpg" alt="" width="9%" height="9%">
     = basic concepts 
@@ -2255,29 +2268,697 @@
             . schedule a disk operation to read the desired page into the newly allocated frame 
             . when the disk read is completed, modify the internal table and page table to indicate that the page is now in memory
             . restart the instruction that was interrupted by the trap since the page is available in memory 
-
+        - pure demand paging, never bring a page into memory until it is required 
+        - program could access multiple pages for an instruction(one page for instruction and many for data), causing multiple page faults per instruction and results in unacceptable system performance
+        - fortunately, analysis shows that this situation is exceedingly unlikely and programs tend to have 'locality of reference'
+        - hardware to support demand paging is same for paging and swapping 
+            . page table,  
+            . secondary memory, the section of the disk used for the swapping purpose is called 'swap space'
+        - if the page fault occurs 
+            . on the instruction fetch, restart by fetching the instruction again 
+            . on the operand fetch, restart by fetching and decoding the instruction again and fetch the operand 
+        - some architecture provides instruction to move a lot of bytes(256) from one location to another
+        - IBM System 360/370, move instruction can move 256 bytes from one location to another
+        - if both blocks are in different pages and if page fault occur during the data movement then restarting will not guarantee correctness 
+        - one possible scenario is data might have moved from source location but not reached destination
+        - 2 possible solutions are 
+            . microcode computes and attempts to access both ends of both block, page fault can occur at this early stage 
+            . use temporary registers to hold the values of overwritten locations and if page fault occurs old value will be written back into memory before the trap occurs
+        - so there are some architectural problems will occur if we add paging to an existing architecture especially on demand paging environment
     = performance of demand paging 
+        - demand paging can significantly affect the performance of a computer system 
+        - effective access time is directly proportional to the page fault rate 
+        - it is important to keep the page fault rate low in a demand paging system, otherwise it will slow process execution dramatically  
+        - additional aspect of demand paging is the handling and overall use of swap space 
+        - swap space is faster to access than the regular file system because it doesn't have to go through the whole directory structure
+        - because swap space is fast, some systems will move an entire process from the file system to swap space before the process starts, so that all future paging occurs from fast swap space
+        - some system use demand paging directly from the file system for binary code(no modification expected) and reserve swap space for data segments(modification expected). eg, solaris and BSD unix
+        - mobile OS typically do not support swapping instead demand paging from the file system         
 # copy-on-write
+    = fork() system call creates a child process that is duplicating parent's pages in the physical memory 
+    = child process invoke exec() system call immediately after fork(), which will replace child pages, so duplication of pages will be an unnecessary step 
+    = COW(copy on write) will overcome this unnecessary step. this will allow the parent and child to share the pages initially 
+    = if either process modifies a shared page a copy of the shared page is created
+    = only those pages that can be modified need to be marked as 'copy-on-write', all the unmodified pages can be shared by the parent and child processes 
+    <img src="images/9.6.copyonwrite.jpg" alt="" width="9%" height="9%">
+    = COW is a common technique used by several OS including windows XP,Linux and Solaris 
+    = most OS will have a poll of free pages, these pages will erase previous contents before being allocated, this technique is known as 'zero-fill-on-demand' 
+    = allocate zero-fill-on-demand pages when duplicating a page with COW
 # page replacement
+    = paging means divide process into equal sized pages and main memory to equal sized frames and keep all the pages in frames
+    = virtual memory means keep all the frames in disk instead of main memory and keep only the needed frames in main memory
+    = when a page fault occurs and there are no free frames (all memory is in use) in free-frame list, so OS have to decide for a possible solution
+        - swap out a page frame (page replacement), it is a common solution
+        - swap out a process and freeing all its frames
+    <img src="images/9.7.freeframelistbeforeandafterallocation.jpg" alt="" width="9%" height="9%">
+    = basic page replacement 
+        - if no frame is free, find one that is currently not being used and free it
+        - freeing it by writing its contents to swap space and changing the page table and all other tables to indicate that the page is no longer in memory 
+        - now use the freed frame to hold the page for which the process faulted 
+        - find the location of the desired page on the disk 
+        - find the free frame 
+            . if there is a free frame use it
+            . if there is no free frame, use a page replacement algorithm to select a 'victim frame' 
+            . write the victim frame to the disk, change the page and frame tables accordingly 
+            <img src="images/9.8.pagereplacement.jpg" alt="" width="9%" height="9%">
+        - read the desired page into the newly freed frame, change the page and frame tables 
+        - continue the user process from where the page fault occurred
+        - If no frames are free, 2 page transfer is required (swap in and out), which increases the effective access time
+        - reduce this overhead by using a modify bit(dirty bit) entry with page table
+            . modify bit will set by the hardware where ever there is a modification in page or frame 
+            . if the dirty bit is modified, copy the contents of the page to disk, otherwise not needed
+        - 2 algorithms needs to develop for implementing demand paging 
+            . frame allocation algorithm, since multiple processes are in memory we need to decide how many frames to allocate to each process  
+            . page replacement algorithm, select and replace the frames, probably the best algorithm will be the one with the lowest page fault rate 
+        - evaluate an algorithm
+            . run the algorithm on a string of memory reference(reference string) with the available frames then compute the number of page faults
+            . reference string can be generated in 2 ways
+                * artificially(eg, using a random number generator)
+                * trace a process and record the address of each memory reference 
+                    ** consider only the page number from the entire address 
+                    ** take a page number if the page number reference is consecutive because the same page reference does not cause a page fault
+            . example for evaluating an algorithm
+                * by tracing a process recorded address sequence, 0100, 0432, 0101, 0612, 0102, 0103, 0104, 0101, 0611, 0102, 0103, 0104, 0101, 0610, 0102, 0103, 0104, 0101, 0609, 0102, 0105(21 addresses)
+                * sequence will be reduced to 1,4,1,6,1,6,1,6,1,6,1(11 pages)
+                * count of page faults 
+                    ** 3 faults if 3 frames are available in memory 
+                    ** 11 faults if only 1 frame, every reference results in a replacement 
+            . number of frames, common perception is that by increasing the number of frames(adding physical memory) reduces the number of page faults but it is not always true 
+            . as per research, for some page replacement algorithms the page fault rate may increase as the number of allocated frames increases. this result is known as belady's anomaly                    
+    = Analyzing various algorithms
+        - reference string : 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2, 1, 2, 0, 1, 7, 0, 1 (20 page numbers)
+        - number of frames : 3
+        - following algorithms to analyze 
+            . FIFO(first in first out) page replacement
+            . OPT(optimal page replacement)
+            . LRU(least recently used) page replacement
+            . LRU approximation page replacement 
+            . counting based page replacement 
+            . page buffering algorithms 
+            . applications and page replacement
+    = FIFO(first in first out) page replacement 
+        - simplest page replacement algorithm is FIFO
+        - criteria  is "replace the oldest page"
+        - FIFO uses the time when a page was brought to memory 
+        - create a FIFO queue to hold all pages in memory
+        <img src="images/9.9.FIFOpagereplacement.jpg" alt="" width="19%" height="9%">
+        - Belady's anomaly can occur in FIFO algorithm. consider the following reference string 1,2,5,1,2,3,4,5 with 3 and 4 frames
+        <img src="images/9.10.beladysanomalyFIFOpagereplacement.jpg" alt="" width="29%" height="9%">
+    = OPT(optimal page replacement) 
+        - this algorithm has the lowest page fault rate for a fixed number of frames of all algorithms also called OPT or MIN
+        - criteria is "replace the page that will not be used for the longest period of time" 
+        - OPT is uses the time when a page is to be used in the future
+        - never suffer from belady's anomaly 
+        <img src="images/9.11.optimalpagereplacement.jpg" alt="" width="19%" height="9%">
+        - a reference to page 2 replaces page 7 because page 7 is not used until reference 18
+        - unfortunately this solution is hard to implement and it is used mainly for comparison studies 
+    = LRU(least recently used) page replacement 
+        - since OPT is not feasible to implement perhaps an approximation of OPT is possible 
+        - criteria is "replace the page that has not been used for the longest period of time"
+        - LRU uses the recent past as an approximation of the near future
+        - never suffer from belady's anomaly
+        <img src="images/9.12.leastrecentlyusedpagereplacement.jpg" alt="" width="19%" height="9%">
+        - a reference to page 4 replaces page 2 because page 2 was least recently used
+        - LRU is considered to be better than FIFO (12 vs 15 faults)
+        - the problem is determining the order of frames given the last usage time, implementation for this solution require substantial hardware assistance
+        - 2 possible implementations are 
+            . counters 
+                * associate each page table entry with a time-of-use field and add a logical clock or counter with the CPU 
+                * clock is incremented for every memory reference and the content of this register(time of the reference) are copied to the time-of-use field
+                * page with smallest time value will be replaced 
+            . stack  
+                * keep a stack of page numbers 
+                * whenever a page is referenced it is removed from the stack and put on the top. most recently used page is always on top and least recently used always on bottom  
+                * best to implement using doubly linked list with a head and tail pointers. there is no search for a replacement 
+                * tail pointer points to the bottom of the stack which is the LRU page 
+        - both OPT and LRU is belong to a class of page replacement algorithm called stack algorithm
+        - stack algorithm, the pages kept in memory for a frame set of n are always a subset of frame size n+1
+        - both OPT and LRU won't exhibit belady's anomaly because both are stack algorithm class
+    = LRU approximation page replacement 
+        - some systems provide sufficient hardware support , some are not and some provides some help in the form of 'reference bit'
+        - a reference bit is associated with each entry in the page table and is set by the hardware whenever that page is referenced (reading or writing any byte in the page)
+        - all bits are initially set to '0' by the OS and set to '1' when a page is referenced
+        - although the order of usage is not known but we know which pages were used and which were not. this information is the basis for many page replacement algorithms that approximate LRU replacement 
+        - additional reference bits algorithm
+            . this algorithm including additional ordering information
+            . the latest 8 reference information for each page is stored in a separate table in one byte of memory(orderRef)
+            . at regular interval a timer interrupt transfers control to the OS
+            . OS will shift the 'reference bit' to the high-order(left) bit of the 'orderRef', right-shift the existing bits of the 'orderRef' bit by one, and discard the low-order bit
+            <img src="images/9.13.additionalreferencebitsalgorithm.jpg" alt="" width="19%" height="9%">
+            . if the orderRef contains 00000000 then the page has not been used for 8 time periods and a page used at lease once in every interval 11111111
+            . a page with lowest number in LRU page can be replaced
+            . select all pages with the smallest value or use FIFO to replace
+            . the number of bits of history included in the shift register can be varied depending on the hardware availability  
+        - second chance algorithm
+            . this algorithm is a FIFO replacement algorithm also called clock algorithm
+            . when a page is selected and inspect the reference bit 
+                * if bit is 0 then proceed to replace the page 
+                * if bit is 1 then following 3 things will happen and move on to select next FIFO page
+                    ** give the page a second chance                    
+                    ** reset reference bit to 0(cleared)
+                    ** reset arrival time to current time 
+            . a page that is given a second chance will not be replaced until all other pages replaced or given a second chance 
+            . in addition if a page is used often enough will never be replaced 
+            . one way to implement a second chance algorithm as a circular queue 
+            <img src="images/9.14.secondchance(clock)pagereplacementalgorithm.jpg" alt="" width="9%" height="9%">
+            . a pointer indicates which page is to be replaced next 
+            . when a frame is needed the pointer advances until it finds a page with a 0 reference bit
+            . once a victim page is found the page is replaced and the new page is inserted in the queue in that position  
+            . in worst case if all bits are set then 'second chance algorithm' degrades to FIFO  
+        - enhanced second chance algorithm 
+            . enhancing the second chance algorithm by considering the reference bit and the modify(dirty) bit as an ordered pair. 4 possible classes 
+                * (0,0) recently not used and nor modified, best page to replace 
+                * (0,1) recently not used and modified, need to write before replacing 
+                * (1,0) recently used and not modified, second chance 
+                * (1,1) recently used and modified, second change and need to write before replacing
+            . this algorithm searches the page table in a circular fashion(as many as 4 passes), first pass is looking for a first page with (0,0) if not then second pass for a page with (0,1) etc 
+    = counting based page replacement
+        - there are several algorithms based on counting the number of references to the given page 
+        - LFU(least frequently used), replace the page with the lowest reference count 
+        - MFU(most frequently used), replace the page with the highest reference count 
+        - in general count based algorithm is not commonly used as the implementation is expensive and do not approximate OPT well  
+    = page buffering algorithms 
+        - system keep a pool of free frames 
+        - when a page fault occurs a victim frame is chosen and the desired page is read into a free frame on the pool before the victim is written out 
+        - this procedure allows the process to restart as soon as possible without waiting for the victim page to be written out  
+        - later when the victim page is written, its frame is added to the free frame pool
+        - expansion of this idea is to maintain a list of modified pages and whenever the paging device is idle the modified page is selected and is written to the disk
+        - another modification is to keep a pool of free frames, but remember which page is in each frame, because it can be reused if the page is replaced
+    = applications and page replacement 
+        - some applications (especially DB programs) should be assigned to perform their own memory management because they understand data access and caching requirements better than a general-purpose OS
+        - such programs are given a raw disk partition(raw data blocks and no file system structure) to work on. It is up to the application to use this as extended memory
 # allocation of frames
+    = 2 important task in memory management are page replacement strategy and a frame allocation strategy
+    = if we have 93 free frames and 2 processes how many frames will each process get?
+    = simple case 
+        - single user system with 128KB of memory composed of pages 1KB per size, so this system have 128 frames 
+        - OS may take 35KB leaving 93 frames for the user process 
+        - in pure demand paging, all 93 frames would initially be put on the free frame list 
+        - when user process starts execution it would generate a sequence of page faults and first 93 page faults would all get free frames from the free frame list 
+        - when all the free frames are exhausted, a page replacement algorithm would be used to select one on the in memory 93 frames for replacement 
+        - when the process terminated, all these frames would be placed on the free frame list 
+    = minimum number of frames 
+        - allocate minimum number of frames is dependent on system architecture, and corresponds to the worst case scenario of the number of pages that could be touched by a single instruction
+        - if an instruction spans a page boundary then multiple pages could be needed just for the instruction fetch 
+    = allocation(equal allocation) algorithm
+        - allocate equal number of frames 
+        - m is available frames and n is processes frames so m/n frames for each processes 
+        - m=93 and n=5 so 93/5=18 and 3 reminder
+        - 18 frames per process and 3 frames will be added to the free frame list
+    = proportional allocation
+        - allocate proportional number of frames  
+        - m=93 and n=5
+        - frame requirement for each process p1=10, p2=30, p3=30, p4=16, p5=7 
+        - S = sum(pi)
+        - (pi/S) * m 
+        - (10/(10+30+30+16+7)*90) = 10 frames for p1
+        - in equal and proportional allocations high and low priority process are treated equally 
+    = global vs local allocation 
+        - classification of5445 page replacement algorithms into 2 broad categories 
+            . global replacement 
+            . local replacement 
+        - global replacement allows to select from any process even if the frame is currently allocated to some other process ie, one process can take a frame from another 
+        - local replacement requires that each process select from only its own set of allocated frames 
+        - global page replacement is overall more efficient and is the more commonly used approach  
+    = non uniform memory access 
+        - if the CPU and memory are on the same board, the memory can be accessed with low latency, but if they are on different boards, the memory access latency increases
+        - systems in which memory access times vary significantly are known collectively as NUMA(non-uniform memory access)
+    = extra 
+        - lgroups(latency group), each lgroup gathers together close CPUs and memory together in the kernel
 # thrashing
+    = if the frame allocation for a process falls below the minimum frames required 
+        - OS should suspend execution of that process
+        - swap out its remaining pages and freeing all its allocated frames(intermediate CPU scheduling)  
+    = if a process doesn't have enough frames, it can quickly cause a page fault and replace the page. if the replaced page is needed immediately it will cause a page fault again
+    = repeating the above procedure over and over again is called thrashing
+    = a process is called trashing if it is spending more time paging than executing 
+    = thrashing results in severe performance problems 
+    = early process scheduling schemes would control the DOM(degree of multiprogramming) based on CPU utilization. if it is low, new process will be introduced to increase the DOM
+    = thrashing due to global page replacement
+        - a global page replacement algorithm is used to replace pages regardless of the process which they belong to
+        - if a process needs more frames, it will starts faulting and starts taking frames from other processes 
+        - these faulting processes use page device to swap pages in and out
+        - the ready queue becomes empty when they queue up for page devices and the CPU utilization decreases 
+        - the CPU scheduler sees the decreasing CPU utilization and increases the DOM as a result 
+        - the new process tries to get started by taking frames from the running processes this causes more page faults and longer queue for the paging devices 
+        - again CPU utilization further drops and the CPU scheduler tries to increase DOM even more 
+        - no work is getting done because processes are spending all their time paging 
+    = thrashing due to local page replacement
+        - a local(priority) page replacement algorithm replaces only its own process's pages, so thrashing of other process will not affect the process 
+        - but this replacement cannot provide a complete solution because trashing process will be queued for the page device, so the average service time per page fault will increase
+        - eventually, even a non-thrashing process will have an increased effective access time
+    <img src="images/9.15.thrashing.jpg" alt="" width="9%" height="9%">
+    = thrashing will occur at some point as we increase the DOM even if uses local or global replacement algorithm 
+    = to prevent thrashing we must provide processes with as many frames as they really need right now
+    = techniques to identify the suitable number of frames are 
+        - working set model 
+        - page fault frequency model
+    = working set model 
+        - working set model is based on the concept of locality and defines a working set window of length delta(Δ)
+            . as a process executes it moves from locality to locality 
+            . a locality is a set of pages that are actively used together 
+            . a program is generally composed of several different localities 
+            . localities are defined by the program structure and its data structure 
+        - the idea is to examine the most recent page references (delta)
+        - working set is a moving window. on each memory reference a new reference appears at one end and the oldest reference drops off the other end 
+        - the set of most recent page reference is called 'working set'
+            . if a page is in active use, it will be in the working set
+            . if a page is no longer in use, it will drop from the working set 
+        - accuracy of working set depends on the selection of delta. if delta is 
+            . small, it will not encompass the entire locality 
+            . large, it will overlap several localities 
+            . infinite, it will touch all the pages touched during the process execution  
+        - example
+            <img src="images/9.16.workingsetmodel.jpg" alt="" width="19%" height="9%">
+            . delta(Δ) = 10 
+            . in time 1(t1) for last 10 references the working set is {1,2,5,6,7} from the set of referenced pages {1,5,7,7,7,7,5,2,6,2}
+            . in t2 for last 10 references the working set is {3,4} from the set of referenced pages {4,4,4,3,4,3,4,4,4,3} 
+        - most important property of the working set is its size 
+        - first need to compute the total demand of the pages(D) which is D = ΣWSSi
+        - each process is actively using the pages in its working set so for process i needs WSSi frames 
+        - if available frame is less than the demand (D>m) thrashing will occur 
+        - once Δ is selected, use of the working set is simple 
+        - OS monitors the working set of each process and allocates enough frames to work with 
+        - if there are enough extra frames, another process can be initiated 
+        - if the total number of working sets increases and the total number of available frames decreases, the OS will suspend the process, swap all pages, and transfer the frames to other processes
+        - working set model prevents thrashing while keeping the degree of multiprogramming as high as possible but keep track of the working set is difficult since its a moving window 
+        - if we do not allocate enough frames to accommodate the size of the current locality then the process will thrash (total size of locality > total memory size)
+    = page fault frequency(PDF)
+        - a more direct approach to controlling thrashing is PDF
+        - establish upper and lower bounds based on the page fault rate 
+        - if page fault rate 
+            . exceeds the upper limit, allocate more frames to the process by suspending the process(by OS), swap all pages, and transfer the frames to other processes 
+            . falls below the lower limit, remove frames from the process 
+        <img src="images/9.17.pagefaultfrequency(PDF).jpg" alt="" width="9%" height="9%">
+    = trashing and the resulted swapping will have a large impact on performance 
+    = current best practice in implementing a computer facility is to include enough physical memory to avoid trashing and swapping from smartphones through mainframes 
 # memory-mapped files
+    = a sequential file access requires standard system call(open,read and write) and disk access
+    = alternatively, file IO can be treated as a normal memory access using a virtual memory technique. this approach known as memory mapping a file 
+    = memory mapping allows a portion of the virtual address space to be logically associated with a file. this can result significant performance increases 
+    = basic mechanism 
+        - memory mapping a file is accomplished by mapping a disk block to a page(or pages) in memory
+        - initial access to the file proceeds through ordinary demand paging(page fault) 
+        - a page sized portion of the file is read from the file system into a physical page(some system may opt to read more than a page-sized chunk of memory at a time)
+        - subsequent reads and writes to the file are handled as routine memory accesses 
+        - writing to disk for a memory-mapped file may not be immediate (synchronous)
+            . during a periodic check, updates to disk as part of a periodic check to see if the file has been modified in memory 
+            . when the file is closed, all memory-mapped data is written to disk and removed from virtual memory when the file is closed
+        - different systems calls
+            . open(), read(), write() for standard system call
+            . mmap() for memory mapped specific system call
+        - solaris treats all file IO as memory mapped 
+            . memory mapped specific system call, map the file into the address space of the process 
+            . standard system call, map the file into the address space of the kernel 
+        - multiple processes share same file concurrently by memory mapping a file 
+        <img src="images/9.18.memorymappedsharingfiles.jpg" alt="" width="9%" height="9%">  
+    = shared memory in the windows API 
+        - windows implements shared memory using shared memory mapped files. 3 steps are 
+            . create a file, producing a HANDLE to a new file 
+            . make it a named shared object, producing a HANDLE to the shared object 
+            . map it to virtual memory address space, returning its base address as a void pointer(LPVOID)
+        <img src="images/9.19.sharedmemoryusingmemorymappedIO.jpg" alt="" width="9%" height="9%">
+    = memory mapped IO 
+        - in the case of IO, each IO controller includes registers to hold commands and data being transferred. special IO instructions allow data transfers between registers and memory 
+        - memory mapped IO is implemented in many computer architecture to have more convenient access to the IO devices 
+        - for some devices, it makes sense to map the device controller's registers to addresses in the process's virtual address space. eg, video controller cards
+        <img src="images/9.20.devicecontrollermemorymappedIO.jpg" alt="" width="9%" height="9%">
+        - serial and parallel devices can also use memory mapped IO, mapping the device registers(IO port) to memory addresses
+        - CPU writes a data byte to the data register and sets a bit in the control register. device take the data and clears the control bit to signal that the device is ready for the next byte
+        - CPU implements 2 different methods to identify the status of the control register
+           . programmed IO, CPU constantly pool/loop the control register to watch the control bit
+           . interrupt driven IO, CPU receives an interrupt when the device is ready for the next byte
 # allocating kernel memory
+    = when a process running in user mode and request for additional memory, pages are allocated from the list of free page frames maintained by the kernel 
+    = kernel memory is often allocated from a free memory pool different from the list used to satisfy ordinary user mode processes
+    = 2 primary reasons on having a different free memory pool
+        - many OS do not subject kernel code or data to the paging system, and the allocated space may be less than a page size 
+        - unlike user mode, kernel mode requires memory to reside in physically contiguous pages
+    = 2 strategies for managing free memory assigned to kernel processes 
+        - buddy system 
+            . buddy system allocates memory from a fixed size segment consisting of physically contiguous pages
+            . memory is allocated from this segment using a 'power-of-2 allocator', which satisfies requests in units sized as a power of 2(4KB,8KB,16KB and so forth)
+            . a request will satisfy with the big enough size, for 11KB round to the next highest power 16KB segment 
+            . example 
+                * size of memory segment is initially 256KB and the request is for 21KB
+                * total segment is divided into 2 buddies, AL and AR each of 128KB and one of the buddy can be further divided into 2 buddies of 64KB(BL,BR) each then further to 32KB(CL,CR) each
+                * next highest power of 21KB is 32KB 
+                <img src="images/9.21.buddysystemallocation.jpg" alt="" width="9%" height="9%">
+            . advantage 
+                * buddies can be combined to form larger segments using a technique known as 'coalescing'(combine). ultimately end up with the original 256KB segment 
+            .disadvantage
+                * rounding off to the next highest power is very likely to cause fragmentation within allocated segments 
+        - slab allocation  
+            . the basic idea behind the slab allocator is to have caches of commonly used objects kept in an initialized state available for allocation in the kernel
+            . a 'slab' is made up of one or more physically contiguous pages 
+            . a 'cache' is made up of one or more slabs
+            . cache represents a small amount of very fast memory. a cache is a storage for a specific type of object such as cache representing semaphore stores instances of semaphore objects 
+            . each cache is populated with objects that are instantiations of the kernel data structure like instances of semaphore objects 
+            <img src="images/9.22.slaballocation.jpg" alt="" width="9%" height="9%">
+            . slab allocation algorithm uses caches to store kernel objects and initially all objects marked as 'free' 
+            . number of objects in cache depends on the size of the associated slab. 12KB slabs (3*4KB pages) should store 6(6*2KB) objects
+            . when a new object for a kernel data structure is needed the allocator can assign any free object from the cache and it is marked as 'used'
+            . the cache will fulfill the request using respective object that has already been allocated in a slab and is marked as free 
+            . in linux, a slab may be in 3 possible states
+                * Full, all objects in the slab are 'used' 
+                * Empty, all objects in the slab are 'free' 
+                * Partial, both 'used' and 'free' objects 
+            . order of slab allocation with a free object
+                * first, try to satisfy from partial slab
+                * next from an empty slab 
+                * last, new slab is allocated from contiguous physical pages and assigned to a cache. memory for the object is allocated from this slab
+            . advantage
+                * no internal fragmentation, each kernel data structure is associated with a cache, and the cache is divided equally by the size of the objects and correct amount of memory can be allocated
+                * since memory for the objects are created in advance thus can be quickly allocate from cache. in case of release the object will be marked as free and returned to its cache 
+    = linux originally used baddy system however from version 2.2 linux adopted the slab allocator(linux refers the implementation as SLAB)
+    = recent distribution include 2 other kernel memory allocators 
+        - SLOB 
+        - SLUB(from 2.6.24 onwards default)
 # other considerations
+    = major decisions to make for a paging system are the selection of
+        - a replacement algorithm
+        - an allocation policy 
+    = other points of consideration
+        - prepaging 
+        - page size 
+        - TLB reach 
+        - inverted page tables 
+        - program structure 
+        - IO interlock and page locking
+    = prepaging     
+        - page faults will increase in 2 occasions
+            . when a process starts 
+            . when a swapped out process is restarted 
+        - prepaging is an attempt to prevent this increase in initial paging  
+        - strategy is to bring all the required pages into memory at one time
+        - solaris, prepage the page frames for small files 
+        - systems with working-set model, will bring all the pages mentioned in the working set to the memory when the process is restarting 
+        - implementing prepaging is beneficial if the cost is less than the cost of page faults
+    = page size 
+        - a page size must be decided when designing a new machine and there is no single best page size 
+        - page size is invariably powers of 2, generally ranging from 4096(2<sup>12</sup> or 4KB) to 4,194,304(2<sup>22</sup> or 4MB) bytes
+        - page table a concern while deciding on the page size. decreasing the page size increases the number of pages and hence the size of the page table 
+        - each active process should have its own copy of the page table, and a large page size is desirable
+        - for a virtual memory of 4MB, there can be 4096 pages of 1KB each or 512 pages of 8KB each 
+        - decision on smaller pages va large pages
+            . smaller pages, memory is better used with smaller pages to minimize internal fragmentation
+            . larger pages, large page to minimize IO time
+                * at a transfer rate of 2MB/sec
+                * transferring a page size of 512 bytes will take 28.2 milliseconds(transfer of 0.2, latency of 8 mils and seel of 20 mils)
+                * transferring a page size of 1024 bytes will take 28.4 milliseconds(transfer of 0.4, latency of 8 mils and seel of 20 mils)
+                * for transferring of two 512 bytes pages will take 56.4 mils but for a single page of 1024 byte will take 28.4 mils so larger page size is desirable
+            . smaller pages, less IO and less total allocated memory
+                * if a page size is 100KB and the process just need 25KB for execution then the IO and memory allocation for 75KB is unwanted 
+            . larger pages, large page for minimizing the number of page faults and overhead 
+                * every page fault will have the overhead of processing the interrupt, saving register, replacing a page, queueing for the page device and updating table
+        - historically trend is toward larger page sizes even for mobile systems
+        - page size on my current machine(Dec 2022) is 4096 bytes(4KB)
+    = TLB reach 
+        - TLB reach is a matrix similar to hit ratio
+        - TLB reach refers to the amount of memory accessible from the TLB, number of TLB entries * page size 
+        - ideally working set for a process is stored in TLB 
+        - approaches for increasing TLB reach
+            . double the number of entries in the TLB to double the TLB reach 
+            . increase the size of the page 
+            . provide pages of different page sizes
+        - ultraSPARC supports page sizes of 8KB,64KB,512KB and 4MB and it uses both 8KB and 4MB pages
+        - managing of different page size needs support from OS and it comes at a cost in performance
+        - recent trends indicate a move towards SW-managed TLBs and OS support for multiple page sizes 
+    = inverted page tables 
+        - inverted page table contains the mapping information about page to frame 
+        - inverted page table no longer contains complete information about the logical address space of a process and these details will be available in the traditional per process page table 
+        - since the details are missing and require page fault and demand paging to get the details 
+    = program structure 
+        - careful selection of data structures and programming structures can increase locality and hence lower the page fault rate and the number of pages in the working set 
+    = IO interlock and page locking
+        - when demand paging is used some pages needs to be locked in memory. 
+        - lock bit is associated with every frame and it cannot be selected for replacement
 # operating-system examples
-# summary
+# extra
+    = swap space is space used to make extra space for processes, usually on disk, even when main memory is full
+    = memory mapping, is a mechanism that maps a file on disk to a range of addresses within an application's address space. then the application can access files on disk in the same way it access memory 
+    = anonymous memory, is a memory mapping with no file or device backing 
+    = pure demand paging, never bring a page into memory until it is required
+    = a sequential file that contains and stores data in sequential order. it must read from scratch into the desired data location and store it in sequential access devices such as magnetic devices
+    = random access, a file can be accessed non-sequentially or randomly or the contents of files can be accessed directly like seek a location directly to read or write. these files act like an array 
+    = serial transmission of data, bit by bit gets transferred 
+    = parallel transmission of data, a byte or a character gets transferred 
+    = IO port is a socket on a computer that a cable can plugged into. this port connects the peripheral device to the CPU 
+    <img src="images/9.e.1.IOports.jpg" alt="" width="9%" height="9%">
+    = process descriptors, a set of information related to a single process for instance a process priority, whether it is running on a CPU or blocked on an event. 'task_struct' is the type structure
+    = seek, it is the time it takes the head to move from the current track to where the data is
+    = latency, it is the time to move from the current sector to the sector where data resides
+    = transfer, it is the time from the start of the transfer to the completion of the transfer  
+    = 1000 = KB, 1,000,000 = MB, 1,000,000,000 = GB
+</details>
 <hr>
 <b id="id_massstoragestructure_detail">mass-storage structure</b>
-<img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
-overview of mass-storage structure
-disk structure
-disk attachment
-disk scheduling
-disk management
-swap-space management
-raid structure
-stable-storage implementation
-summary
+# overview of mass-storage structure
+    = since the main memory is too small to hold all the information (data and programs) permanently, the computer system must provide secondary storage to back up the main memory
+    = magnetic disk
+        - magnetic disk provide the bulk of secondary storage for modern computer systems 
+        - each disk platter has a flat circular shape like a CD. common platter diameters range from 1.8 to 3.5 inches. both sides of the platter are covered with a magnetic material
+        - magnetic disk store information by recording it magnetically on the platters
+        <img src="images/10.1.harddrive.jpg" alt="" width="9%" height="9%">
+        - bit density reached upto 20 Tbits/in<sup>2</sup> and more
+        - a read-write head attached to a disk arm moves from one side of the platter to the other
+        - platter is logically divided in to circular tracks and track subdivided into sectors
+        - a set of tracks on all surfaces of the same diameter called a cylinder
+        - disk drive spindle motor spins at a high speed cause the disk to rotate 
+        - data speed has 2 parts (transfer rate + positioning rate)
+            . transfer rate, the rate at which data flow between the drive and the computer
+            . positioning rate, it has 2 parts 
+                * seek time, time to move the disk arm to the desired cylinder 
+                * rotational latency, necessary time for the desired sector to rotate to the disk head 
+        - disk drive is attached to a computer by a set of wires called an IO bus 
+        - several kind of buses 
+            . advanced technology attachment(ATA)
+            . serial ATA(SATA)
+            . eSATA
+            . universal serial bus(USB)
+            . fibre channel(FC)
+        - data transfer on a bus are carried out by special electronic processors called controllers 
+            . a disk controller converts the signals read by a disk's read and write head and transmits them to the peripheral bus
+            . a host adapter enables computer system to communicate with a peripheral bus. converts the signals from peripheral bus to appropriate format for the motherboard's bus. finally the CPU reads it
+            . host controller(adaptor), a controller at the computer end of the bus and disk controller built into each disk drive usually a circuit board covering the bottom of the drive 
+            <img src="images/10.2.diskcontrollerandhostadaptor.jpg" alt="" width="9%" height="9%">
+        - data transfer working 
+            . a computer places a command into the host controller typically using memory mapped IO ports
+            . the host controller then sends the command via messages to the disk controller
+            . the disk controller operates the disk drive hardware to carry out the command
+            . disk controller usually have a built in cache and the data transfer at the disk drive happens between surface and cache
+            . data transfer to the host controller happens between the disk controller cache and the host controller
+    = solid state disk
+        - a non volatile memory that is used like a hard drive 
+        - more reliable than HDD because it doesn't have moving part, no seek time and latency, consume less power 
+        - more expensive per MB than HDD, less capacity than HDD, shorter life span than HDD
+    = magnetic tapes 
+        - tapes are used for backup for storage of infrequently used information and as a medium for transferring information from one system to another 
+        - positioning or moving to correct spot for reading or writing data will may takes minutes 
+        - once positioned the speed is comparable to disk drive 
+# disk structure
+    = modern magnetic disk drives are addressed as large one dimensional arrays of logical blocks
+    = logical block is the smallest unit of transfer usually 512 bytes, some disks can be low-level formatted to have a different logical block size such as 1024 bytes
+    = one dimensional array of logical blocks is mapped onto the sectors of the disk sequentially 
+    = sector 0 is the first sector of the first track on the outermost cylinder
+    = mapping continues in sequence through that track, then through the rest of the tracks on that cylinder, then through the rest of the cylinder from outermost to innermost 
+    = there are 2 ways to store data
+        - constant linear velocity(CLV), density of bits on every track is uniform. as a result the outermost tracks typically hold 40% more sectors than do tracks in the innermost zone
+        - constant angular velocity(CAV), bit density is reduced from the inner tracks to the outer tracks to keep the data rate constant
+    = to overcome CLV deficiency, drive increases its rotation speed as the head moves from the outer to the inner tracks to keep the same rate of data moving under the head
+    = eg,drive can read x sectors/sec, 100/1 from outer track but 40/1 so drive will increase the speed to match data intake
+    = as disk technology improves the number of sectors per track and the number of cylinders per disk are increasing
+# disk attachment
+    = computer will access the disk storage in 2 ways 
+        - via IO ports(host attached storage) common in small systems 
+        - via a remote host in a distributed file system(network attached storage)
+    = host attached storage 
+        - storage accessed through local IO ports 
+        - these ports use several technologies 
+            . IDE or ATA or SATA, typical desktop PC uses IO bus architecture called IDE or ATA or SATA 
+            . FC(fibre channel), servers or high end workstations uses FC. FC protocol has 2 variants 
+                * large switched fabric, this scheme is used to address ports in the switched fabric and each port has its own unique 24-bit address. this is the basic of storage area networks(SAN)
+                * arbitrated loop(FC-AL), is a fibre channel topology in which devices are connected in a one way loop fashion in a ring topology. it was a lower-cost alternative to a fabric topology 
+        - wide variety of storage devices are suitable for use as host attached storage 
+            . hard disk drive
+            . RAID arrays 
+            . CD 
+            . DVD 
+            . tape drives 
+    = NAS(network attached storage)
+        - NAS device is a special purpose storage system that is accessed remotely over a data network 
+        - clients access NAS via a remote procedure call interface such as NFS for unix or CIFS for windows 
+        - RPC calls are carried via TCP or UDP over an IP network usually the same LAN that carries all data traffic to the clients  
+        - NAS unit is usually implemented as a RAID array with software that implements the RPC interface
+        - NAS provide a convenient way for all the computers on a LAN to share a pool of storage with but it is less efficient and low performance than direct attached options
+        - iSCSI is the latest NAS protocol, it uses IP network protocol to carry the SCSI protocol, thus networks can be used as the interconnects instead of SCSI cables  
+        <img src="images/10.3.networkattachedstorage.jpg" alt="" width="9%" height="9%">
+    = SAN(storage area network)
+        - communication between servers and clients competes for bandwidth with the communication among servers and storage devices 
+        - SAN is a private network using storage protocols rather than networking protocols connecting servers and storage units 
+        - power of SAN lies in its flexibility. multiple hosts and multiple storage arrays can attach to the same SAN and storage can dynamically allocated to hosts 
+        - SAN interconnects are 
+            . FC is the most common
+            . iSCSI is increasing its use
+            . infiniband, a special purpose bus architecture 
+        <img src="images/10.4.storageareanetwork.jpg" alt="" width="9%" height="9%">
+# disk scheduling
+    = IO work flow (to or from disk) required by a process
+        - process issues a system call to the OS . this request specifies following informations 
+            . is it an input or output 
+            . disk address for transfer 
+            . memory address for transfer 
+            . number of sectors to be transferred  
+        - servicing the request 
+            . request can be serviced immediately if the desired disk drive and controller are available 
+            . request will be placed in the queue of pending requests for that drive, if the drive and controller is busy 
+        - in a multiprogramming environment, the OS will decide which IO request to service next from the pending queue list
+        - the OS will use some disk scheduling algorithm to decide which IO request to service next from the pending queue list
+    = evaluating various algorithms
+        - a disk with 200 cylinder
+        - a disk queue requesting IO for the following blocks on cylinders (98,183,37,122,14,124,65,67)
+        - currently the head is positioned at 53rd cylinder  
+    = FCFS scheduling 
+        - FCFS is first come first serve algorithm 
+        - full head movement and service from 53-98-183-37-122-14-124-65-67
+        - total head movement of 640 cylinders [(98−53)+(183−98)+(183−37)+(122−37)+(122−14)+(124−14)+(124−65)+(67−65)]
+    = SSTF scheduling 
+        - service the request close to the current head position before the head move faraway to service other requests 
+        - SSTF(shortest seek time first) algorithm
+        - full head movement and service from 53-65-67-37-14-98-122-124-183
+        - total head movement of 236 cylinders [(65−53)+(67−65)+(67−37)+(37−14)+(98−14)+(122−98)+(124−122)+(183−124)]
+        - this is similar to shortest job first(SJF) scheduling and this algorithm will suffer from starvation of some requests
+        - this algorithm is a substantial improvement over the FCFS algorithm but it is not optimal
+    = SCAN scheduling 
+        - head movement and processing
+            . moves the head from the initial position to one edge of the disk and processes requests along the way
+            . immediately head to the other end and processes requests along the way   
+            . the algorithm forces the head to move both extreme end cylinders even though there is no request to process   
+        - some time its called elevator algorithm, since the disk arm behave like an elevator in a building
+        - assuming that the disk arm is moving towards 0 from the initial head position of 53 
+            . full head movement and service from 53-37-14-0-65-67-98-122-124-183
+            . total head movement of 236 cylinders [(53-0) + (183−0)]
+        - assuming that the disk arm is moving towards 199 from the initial head position of 53 
+            . full head movement and service from 53-65-67-98-122-124-183-199-37-14
+            . total head movement of 331 cylinders [(199-53) + (199−14)]
+    = C-SCAN scheduling 
+        - circular scan scheduling is a variant of SCAN to provide a more uniform wait time 
+        - head movement and processing
+            . moves the head from the initial position to one edge of the disk and processes requests along the way
+            . immediately head to the other end without processing any requests along the way
+            . on the subsequent return trip processes requests along the way 
+            . the algorithm forces the head to move both extreme end cylinders even though there is no request to process
+        - assuming that the disk arm is moving towards 0 from the initial head position of 53 
+            . full head movement and service from 53-37-14-0-199-183-124-122-98-67-65
+            . total head movement of 386 cylinders [(53-0) + (199-0) + (199-65)]
+        - assuming that the disk arm is moving towards 199 from the initial head position of 53 
+            . full head movement and service from 53-65-67-98-122-124-183-199-0-14-37
+            . total head movement of 382 cylinders [(199-53) + (199−0) + (37-0)]
+    = LOOK and C-LOOK scheduling 
+        - both SCAN and C-SCAN move the disk arm across the full width of the disk
+        - but in practice neither algorithm is often implemented this way and the arm goes only as far as the final request in each direction 
+        - versions of SCAN and C-SCAN that follow this pattern are called LOOK and C-LOOK scheduling because they look for a request before continuing to move in a given direction 
+        - LOOK scheduling, assuming that the disk arm is moving towards 0 from the initial head position of 53 
+            . full head movement and service from 53-37-14-65-67-98-122-124-183
+            . total head movement of 208 cylinders [(53-14) + (183−14)]
+        - LOOK scheduling, assuming that the disk arm is moving towards 199 from the initial head position of 53 
+            . full head movement and service from 53-65-67-98-122-124-183-37-14
+            . total head movement of 347 cylinders [(183-53) + (183−14)]
+        - C-LOOK scheduling, assuming that the disk arm is moving towards 0 from the initial head position of 53 
+            . full head movement and service from 53-37-14-183-124-122-98-67-65
+            . total head movement of 326 cylinders [(53-14) + (183-14) + (183-65)]
+        - C-LOOK scheduling, assuming that the disk arm is moving towards 199 from the initial head position of 53 
+            . full head movement and service from 53-65-67-98-122-124-183-14-37
+            . total head movement of 322 cylinders [(183-53) + (183-14) + (37-14)]
+    <img src="images/10.5.examplesfordiskschedulingalgorithms.jpg" alt="" width="19%" height="9%">
+    = selection of a disk scheduling algorithm 
+        - SSTF has a natural appeal because it increased performance over FCFS 
+        - SCAN and C-SCAN perform better for systems that place a heavy load on the disk because they are less likely to cause a starvation problem 
+        - disk scheduling algorithm should be written as a separate module of the OS so that it can be replaced with a different algorithm if necessary 
+        - either SSTF or LOOK is a reasonable choice for the default algorithm 
+# disk management
+    = disk formatting 
+        - a new magnetic disk is a blank slate, it is just a platter of a magnetic recording material 
+        - physical formatting or low level formatting, before data can be stored in disk, it must be divided into sectors that the disk controller can read and write 
+        - low level formatting fills the disk with a special data structure for each sector 
+        - data structure for each sector typically consists of a header, a data area(usually 512 bytes), and a trailer 
+        - header and trailer contains information used by the disk controller such as sector number and error correcting code(ECC)
+        - when the controller 
+            . writes a sector of data, ECC is updated with a value calculated from all the bytes in the data area 
+            . reads the sector, ECC is recalculated and compared to the store value. If the value is different, it means that the data area of ​​the sector is corrupted and the data sector may be bad
+        - controller automatically does the ECC processing whenever a sector is read or written 
+        - disk formatting process involves 
+            . low level formatting 
+            . partitioning 
+            . high level formatting 
+        - low level formatting is a type of physical formatting 
+            . it is the process of marking the cylinders and tracks of a blank hard disk, then division of tracks into sectors with the sector markers 
+            . now a days low level formatting is performed by the hard disk manufactures themselves 
+            . it must be told how many bytes of data space to leave between the header and trailer in each sector
+            . usually choose among from the size 256, 512 and 1024 bytes. Some OS can handle only 512 bytes 
+            . after low level formatting it is impossible to recover data from the disk
+        - partition, the disk into one or more groups of cylinders. OS can treat each partition as it were a separate disk, ie one partition hold OS executable code and other holds user files  
+        - logical formatting is the process of
+            . setting up an empty file system on a disk partition or a logical volume like NTFS,FAT32, exFAT or other formats
+            . installing boot sector 
+        - most file systems group blocks together into larger chunks called clusters 
+        - disk IO is done via blocks and file system IO is done via clusters  
+        - OS gives certain programs the ability to use a disk partition as a large array of logical blocks without file system data structures called raw disks and IO to this array is called raw IO
+    = boot block 
+        - when a computer is powered up or rebooted it must have an initial program to run, bootstrap
+        - bootstrap program do the following steps
+            . initializes all aspect of the system(CPU registers, device controllers and content of main memory)
+            . finds the OS kernel on disk
+            . loads that kernel into memory
+            . jumps to an initial address to begin the OS execution 
+        - bootstrap program is conveniently stored in read-only memory (ROM) so it does not require an initialization, and is in a fixed location so the processor can execute it at power up or restart
+        - but to change this program code or fix the error, the ROM hardware chips need to be changed
+        - as a cost effective solution 
+            . most systems store only a tiny bootstrap loader program in the boot ROM
+            . a full bootstrap program stored in the boot blocks at a fixed location on the disk. this partition might contain OS and device drivers 
+            . the tiny bootstrap loader program instructs the disk controller to read and load the boot blocks(full bootstrap program) into memory
+            . full bootstrap program will load entire OS from a non-fixed location on disk and start the OS. device drivers are not loaded at this point
+        - a disk that has a boot partition is called a boot disk or system disk 
+        - in the x86 world bootstrap is often explained in 2 stages 
+            . first stage bootloader(BIOS) 
+            . second stage bootloader(GRUB,MBR & NTLDR)
+        - booting steps in the x86 world
+            . when a computer is powered up, BIOS is loaded, it will scan all the attached devices and prepare them to be in a form that OS can use 
+            . after the initial work, BIOS will load the boorloader which is a part of OS and does the job of loading the OS
+            <img src="images/10.6.bootingworkflow.jpg" alt="" width="9%" height="9%">
+        - outside of X86 world(phone, embedded devices,etc) the term BIOS is usually not used all stages of boot loaders are often called boot loader
+        - windows as an example 
+            . windows allows a hard disk to be divided into partitions 
+            . one partition is called the boot partition which contains the OS and device drivers 
+            . windows system places its boot code in the first sector on the hard disk termed as (MBR)master boot record
+            . MBR contains 
+                * boot code
+                * a table listing the partitions for the hard disk
+                * a flag indicating which partition the system should boot from
+            . booting is initiated by running code residing in the system's ROM that directs the system to read the boot code from the MBR
+            . once the system identifies the boot partition
+                * it reads the first sector from that partition(boot sector)
+                * continues with the reminder of the boot process including load various subsystems and system services  
+            <img src="images/10.7.bootingfromdiskinwindows.jpg" alt="" width="9%" height="9%">
+    = bad blocks 
+# swap-space management
+    = swap space use 
+    = swap space location 
+    = swap space management 
+# raid structure
+    = improvement of reliability va redundancy 
+    = improvement in performance via parallelism 
+    = RAID levels 
+    = selecting RAID level 
+    = extensions 
+    = problems with RAID 
+# stable-storage implementation
+# extra
+    = one dimensional array, one row and multiple columns 
+    = two dimensional array, multiple rows and multiple columns 
+    = large switched fabric, fabric is a number of switching elements connected together or bunch of interconnected switches 
+    = topology, is the arrangement of nodes and connections within a network either physical or logical 
+    = boot ROM, is a type of ROM that is used for booting a computer system
 <hr>
 <b id="id_filesysteminterface_detail">file-system interface</b>
 <img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
