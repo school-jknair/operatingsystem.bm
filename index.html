@@ -100,12 +100,15 @@
 </head>
 <body>
 <pre>
-                                                                                                        <cite>ജയകുമാർ നായർ തയ്യാറാക്കിയത് 
-                                                                                                        reference: 
-                                                                                                        Operating System Concepts, Ninth Edition by Abraham Silberschatz, Peter Baer Galvin and Greg Gagne
-                                                                                                        https://www.youtube.com/channel/UCVZD4ph7tqdAbVO4URH9QGw/videos (need to refer)
-                                                                                                        https://www.youtube.com/watch?v=GryqH5TiNmc  (need to refer)
-                                                                                                        https://youtu.be/wJBDIwU5m20   (need to refer)
+                                                            <cite>ജയകുമാർ നായർ തയ്യാറാക്കിയത് 
+                                                            reference: 
+                                                            Operating System Concepts, Ninth Edition by Abraham Silberschatz, Peter Baer Galvin and Greg Gagne
+                                                            https://www.youtube.com/channel/UCVZD4ph7tqdAbVO4URH9QGw/videos (need to refer)
+                                                            https://www.youtube.com/watch?v=GryqH5TiNmc (need to refer)
+                                                            https://youtu.be/wJBDIwU5m20 (need to refer)
+                                                            (need to refer for magnifying picture)
+                                                                https://en.wikipedia.org/wiki/Four-wire_circuit 
+                                                                https://bit-tech.net/reviews/tech/understanding_raid/2/#:~:text=Byte%2Dlevel%20striping%20means%20that,the%20whole%20process%20starts%20over
                                                                                                                    </cite>
 <hr>
 <details>
@@ -2941,25 +2944,262 @@
                 * continues with the reminder of the boot process including load various subsystems and system services  
             <img src="images/10.7.bootingfromdiskinwindows.jpg" alt="" width="9%" height="9%">
     = bad blocks 
+        - is one or more sectors on a disk storage that is permanently damaged or corrupted for storing or retrieving data
+        - depending on the disk and controller in use these blocks are handled in a variety of ways 
+        - data that resided on the bad blocks usually are lost 
+        - managing bad sectors on simple disks such as disk with IDE controllers
+            . formatting disk, format the disk to scan and identify the bad sectors. any bad disk identified during this operation flagged as unusable so that file system does not allocate them 
+            . if block go bad during normal operation, a special program(on linux it is 'badblocks' command) must run manually to search for the bad blocks and lock them away 
+        - managing bad sectors on more sophisticated disks 
+            . controller maintains a list of bad blocks on the disk, this list is initialized during the low level formatting at the factory and is updated over the life of the disk
+            . 2 methods to manage the data from bad sector 
+                * spare sector 
+                * sector slipping
+        - spare sectoring
+            . maintaining a spare sector per track to be used if another sector becomes defective. controller will replace bad sector logically with one on the spare sector
+            . but this process will nullify the optimization achieved from the OS disk scheduling algorithm, to overcome the optimization loss due to the above redirection 
+                * disks are formatted to provide a spare cylinder and fewer sectors per cylinder
+                * controller will use the spare sector from the same cylinder, if possible 
+            . example
+                * OS tries to read logical block Y 
+                * controller calculates the ECC and finds that the sector is bad and reports to OS
+                * on next reboot, a special command is run to tell the controller to replace the bad sector with a spare 
+                * from now on, the controller translates(redirect) all requests for logical block Y to the address of the replaced sector
+            <img src="images/10.8.sectorsparing.jpg" alt="" width="19%" height="9%">
+        - sector slipping
+            . as an alternative to sector sparing, some controller will use sector slipping to replace bad blocks
+            . if spare sector is Y then data from Y-1 is copied to Y and Y-2 data to Y-1 and same process continues till bad sector, this process is called sector slipping 
+            <img src="images/10.9.sectorslipping.jpg" alt="" width="19%" height="9%">
+        - replacement of bad blocks are generally not automatic
+            . soft errors may trigger a process in which a copy of the block data is made and the block is spared or slipped 
+            . hard error may results in lost data. whatever file was using that block must be repaired(by restoration from the backup tape)
 # swap-space management
+    = swapping means moving entire process between disk and main memory but modern OS implement swap of pages not entire process with the help of virtual memory
+    = in fact some systems use terms swapping and paging interchangeably, reflecting the merging of these 2 concepts
+    = virtual memory uses disk space as the extension of main memory 
+    = since disk access is much slower than memory access, using swap space is significantly decreases system performance 
+    = main goal for implementing swap space is to provide the best throughput for the virtual memory system
     = swap space use 
+        - amount of swap space vary greatly according to how it is used 
+            . some system require virtual memory is little more than physical RAM
+            . some system require an amount equal to physical RAM 
+            . some system require multiples of physical RAM 
+        - solaris, setting swap space equal to the amount by which virtual memory exceeds pageable physical memory 
+        - linux, setting swap space to double the amount of physical memory. recently linux systems use considerably less swap space 
+        - some system support multiple swap spaces on separate disks 
     = swap space location 
+        - swap space can be physically located in 2 locations
+            . as a large file which is a part of the regular filesystem 
+                * this is easy to implement but inefficient 
+                * it is inefficient because 
+                    ** navigating the directory structure and disk allocation data structure takes time and possibly extra disk accesses
+                    ** external fragmentation can increase swapping time because of multiple seeks during reads and writes 
+                * to improve performance 
+                    ** cache the block location information in main memory 
+                    ** use special tools to allocate physically contiguous blocks for the swap file 
+                * traversing file system data structure overhead remains even after applying improvements 
+            . as a raw partition
+                * on a separate disk and no file system or directory structure is placed in this space rather a separate swap-space storage manager is used to allocate and deallocate the blocks
+                * raw partition approach creates a fixed amount of swap space during disk partitioning, adding more swap space requires either repartitioning the disk or adding another swap space elsewhere  
+                * this is usually faster and more efficient 
+                * internal fragmentation might increase but the swap space will be reinitialized at boot time so fragmentation is short lived 
     = swap space management 
-# raid structure
-    = improvement of reliability va redundancy 
+        - historically OS swapped out entire processes as needed. but modern systems swap out only individual pages
+        - the pages which will not change since inception like code blocks will be copied directly from file system and thrown away on page out rather than using swap space
+        - on linux 
+            . each swap area consists of a series of 4KB page slots which are used to hold swapped pages
+            . associated with each swap area is a swap map, an array of integer counters, each corresponding to a page slot in the swap area
+                * value = 0, page slot is available 
+                * value = 1, page slot is occupied by a swapped page 
+                * value > 1, page slot is occupied by a swapped page and mapped to (shared by) more than 1 process
+        <img src="images/10.10.datastructureforswappingonlinuxsystems.jpg" alt="" width="9%" height="9%">
+# RAID structure
+    = a large number of disk operating in parallel provide extensive opportunities 
+        - improve the rate at which data can be read or written 
+        - redundant information can be stored on multiple disks to improve data storage reliability
+    = a variety of disk organization technique collectively called as RAID(redundant array of independent disks or redundant array of inexpensive disks)
+    = today RAID is used for high reliability and high data transfer rates 
+    = RAID protects against physical media errors
+    = RAID storage can be structured in a variety of ways 
+        - directly attach the disks to system buses and implement the RAID functionality on OS or system software 
+        - an intelligent host controller which manages multiple attached disks and implements RAID in hardware
+        - a RAID array which is a standalone unit with its own controller, cache and disks. RAID array is attached to the host via one or more standard controllers (FC) 
+    = improvement of reliability via redundancy 
+        - redundancy is a design in which a component is duplicated so if it fails there will be a backup, information can be mirrored data or parity bits
+        - redundancy approaches 
+            . write on both disks at a time(mirroring)
+                * mirroring, duplicating every disk. in mirroring a logical disk consists of 2 physical disks 
+                * mirrored volume, every write is carried out on both disks it is called mirrored volume   
+                * if one disk fails in the mirrored volume, data can be read from the other. data will be lost only if both disks fails
+                * simplest but most expensive approach
+            . write in one disk then to next 
+                * if power fails before both blocks are fully written both block will be inconsistent state
+                * solution is, write one copy first then the next 
+            . add a solid state nonvolatile RAM(NVRAM) as cache to the RAID array 
+                * another solution for power failure problem 
+                * NVRAM write back(behind) cache is protected from data loss during power failures, it usually has battery power to back up the unit's power
+        - pros and cons
+            . through mirroring read request can be doubled since the requests can be sent to either disk and it can be satisfied by any of the disk in the array
+            . but transfer rate is same as single disk
     = improvement in performance via parallelism 
-    = RAID levels 
+        - improve the transfer rate with multiple disks by striping data across the disks
+        - different types of data striping
+            . bit level striping
+            . bytes level striping
+            . block level striping 
+            . sectors of a block
+        - bit level striping 
+            . splitting the bits of each byte across multiple disks called bit level striping 
+            . bit 'i' is written to disk 'i'
+            . eg, every 2nd bit from a byte will be written on to 2nd disk if disk array is of 8 disks 
+            . the number of disks can be a multiple of 8 or a division of 8
+        - bytes level striping 
+            . each byte on each disk
+            . byte 'i' is written to disk 'i'
+            . eg, every 2nd byte will be written on to 2nd disk if disk array is of 8 disks and 9th byte in 1st disk
+        - block level striping 
+            . each block on each disk
+            . block is group of number of bytes, 512 bytes by default but can be specified otherwise
+            . with 'n' disks, block 'i' of a file goes to disk (i mod n) + 1
+            . block size can be referred to as stripe size 
+            . a file smaller than the stripe will be stored on disk
+            . eg, (15 mod 8) + 1 = 8 and (16 mod 8) + 1 = 1 
+        - sectors of a block 
+        - most common is block level striping
+        - pros and cons
+            . improvement on the transfer rate by striping data across the disks 
+    = RAID levels
+        - mirroring provides high reliability but it is expensive 
+        - striping provides high data transfer rate but it does not improve reliability
+        - there are numerous schemes to provide redundancy using disk striping combined with parity bits and they are classified according to level called RAID levels
+            . RAID level 0
+                * striping but no mirroring, disk arrays with block level striping
+                * good performance will be obtained
+                * back up data is the only option for redundancy
+            . RAID level 1
+                * mirroring but no striping
+                * data availability/reliability will be obtained
+            . RAID level 2
+                * striping at bit level and store among disks and parity bits(ECC) are stored in additional disks
+                * 1st bit in 1st disk, 8th bit in 8th disk
+                * if one of the disk fails, the remaining bits of the byte and associated ECC bits from all the disks are used to reconstruct the damaged data
+                * level 2 is not used in practice 
+                * it is a parity RAID 
+            . RAID level 3
+                * bit interleaved parity
+                * improved on level 2 unlike memory system disk controllers can detect whether a sector has been read correctly so a single parity bit can be used for error correction and detection  
+                * less expensive as level 2 requires more disks
+                * it is a parity RAID 
+            . RAID level 4
+                * block interleaved parity uses block level striping 
+                * if one of the disk fails, the parity block used with the corresponding blocks from the other disks to restore the blocks of the failed disk 
+                * it is a parity RAID 
+            . RAID level 5
+                * block interleaved distributed parity
+                * data and parity block interleaved among all disks 
+                * parity bit is stored in (n mod 5)+1 disk on an array of 5 disks 
+                * level 5 is the most common parity RAID system 
+                * it is a parity RAID 
+            . RAID level 6
+                * also called P + Q redundancy scheme 
+                * much like level 5 but store extra redundant information(dual distributed parity) to guard against multiple disk failures 
+                * reed-solomon correcting code is used instead of parity. 2 bits of redundant data are stored for every 4 bits of data and this level can tolerate 2 disk failures 
+                * it is a parity RAID 
+            . RAID level 0 + 1 and 1 + 0
+                * level 0 and level 1 
+                * level 0 provides performance and level 1 provides reliability
+                * difference on both
+                    ** level 0 + 1, first stripe the data among disks and then mirror those disks
+                    ** level 1 + 0, disks are mirrored in pairs and resulting mirrored pairs are striped
+                * level 0 + 1 and 1 + 0 provides better performance than level 5 but theoretically level 1 + 0 having advantage over 0 + 1
+                * these RAID levels are very common in environments where both performance and reliability are important(web server or email server)
+        <img src="images/10.11.RAIDlevels.jpg" alt="" width="9%" height="9%">     <img src="images/10.12.RAIDlevelswithexample.jpg" alt="" width="9%" height="9%">
+        * in the figure, 4 disks of data stored and extra disks are used to store redundant information for failure recovery. P indicates error correcting bits and C a second copy of the data 
+    = layers at which RAID can be implemented 
+        - volume management software can implement RAID within the kernel or at the system software layer. parity RAID is fairly slow when implemented in software so RAID level 0, 1 or 0 + 1 is used 
+        - in the host bus-adapter(HBA) hardware. low cost but not very flexible 
+        - in the hardware of the storage array
+        - in the SAN interconnect layer by disk virtualization devices
     = selecting RAID level 
+        - RAID level 0
+            . high performance and data loss is not critical
+        - RAID level 1
+            . rebuild performance, if a disk fails and the time needed to rebuild its data can be significant
+            . high reliability with fast recovery
+        - RAID level 0 + 1 and 1 + 0
+            . high performance and high reliability(eg, small databases)
+        - RAID 5
+            . preferred for storing large volumes of data due to RAID 1's high space overhead 
+        - RAID 6 
+            . not supported currently, but it offer better reliability than level 5  
     = extensions 
+        - RAID concepts has been extended to arrays of tapes and for broadcasting of data over wireless systems 
+        - arrays of tapes 
+            . recover data even if one of the tape is damaged in an array
+            . tape drive robots containing multiple tape drives will stripe data across all the drives to increase throughput and decrease backup time
+        - broadcasting of data over wireless systems 
+            . block of data is split into short units and is broadcast along with a parity unit. if one unit is not received, it will be reconstructed from other units using parity unit
     = problems with RAID 
+        - RAID protects against physical media errors but not other hardware and software errors 
+        - approaches to solve some of these problems 
+            - solaris ZFS uses checksum to verify the data integrity. checksum for each data blocks are stored in inode 
+            - ZFS combines file system management and volume management into one unit in order to use disks as a pool of storage
 # stable-storage implementation
+    = write-ahead logging require the availability of stable storage, by definition information residing in stable storage is never lost 
+    = to implement such a storage
+        - we need to replicate information to multiple storage devices with independent failure modes 
+        - we need to coordinate the writing of updates in a way that guarantees that a failure during an update will not leave all copies in a damaged state 
+    = disk write can results in 3 outcomes 
+        - successful completion 
+        - partial completion, failure occurred in the midst of transfer so some sectors contains new data but some with corrupted data  
+        - total completion, failure occurred before the disk writing started 
+    = data writing procedure 
+        - system must maintain 2 physical blocks for each logical block 
+        - write the information to the first physical block 
+        - if its successful, write the information to the second physical block 
+        - declare complete only after the second write completes successfully 
+    = data recovery procedure 
+        - each pair of physical blocks is examined, if both are same no recovery is needed 
+        - if one block contains detectable error, replace its contents with the value of the other block 
+        - if neither block contains a detectable error but both the blocks differ in content, then replace the content of the first block with the second block
+    = to improve the disk writing performance, many storage array add NVRAM as a cache and stores data en route to the disks 
 # extra
     = one dimensional array, one row and multiple columns 
     = two dimensional array, multiple rows and multiple columns 
     = large switched fabric, fabric is a number of switching elements connected together or bunch of interconnected switches 
     = topology, is the arrangement of nodes and connections within a network either physical or logical 
     = boot ROM, is a type of ROM that is used for booting a computer system
-<hr>
+    = write through cache, write is done synchronously both to the cache and to the backing store 
+    = write back(behind) cache, write is done only to the cache and writing back to the back store only before replace
+    = parity
+       - there are 2 parity schemes, even and odd parity schemes
+            . in the even parity scheme, 1 or 0 are added to make the number of 1's even
+            . in the odd parity scheme, 1 or 0 are added to make the number of 1's odd
+            <img src="images/10.e.1.paritybit.jpg" alt="" width="9%" height="9%">
+        - the purpose of parity bit is to provide a simple way to check the data for errors. since the data stored electronically the bit can flip to from 0 to 1 or 1 to 0
+        - if a parity error identified then immediately it will take the steps to correct the errors
+        - parity can be implemented with exclusive OR 
+    = checksum 
+        - checksum means, checking the sum
+        - sender side checksum is created and receiver side checksum is validated 
+        - creation of checksum 
+            . break the original message in to 'k' number of blocks of 'n' bits each 
+            . sum of all 'k' blocks, add carry to the sum incase of carry
+            . 1's complement on the sum, the resultant sum also will have 'n' bits, called checksum value
+        - validation in receivers end
+            . break the original message in to 'k' number of blocks of 'n' bits each
+            . sum of all 'k' blocks, add carry to the sum incase of carry
+            . if all the resultant bits are 1 then received message is correct 
+        - example  
+            <img src="images/10.e.2.checksum.jpg" alt="" width="9%" height="9%">
+    = inode 
+        - it is a data structure to store metadata about a file in linux 
+        - metadata contains 
+            . device where the inode resides, inode index, file type, permission, file size, UID, GID, times (last access, modify, change), number of links and blocks, pointer to the data blocks 
+    = write ahead logging
+        - an append only auxillary disk resident structure used for crash and transaction recovery
+        - all changes are first recorded in the log, which must be written to stable storage, before the changes are written to the database
+<hr
 <b id="id_filesysteminterface_detail">file-system interface</b>
 <img src="images/0.os-birds-eye-view.jpg" alt="" width="9%" height="9%">
 file concept

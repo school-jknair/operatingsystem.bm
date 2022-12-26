@@ -1,10 +1,12 @@
 {
     "cSpell.words": [
+        "badblocks",
         "belady's",
         "bootloader",
         "Interprocess",
         "multiuser",
         "orderreference",
+        "pageable",
         "prepaging",
         "pthread",
         "readcount"
